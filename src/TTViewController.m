@@ -251,6 +251,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+#ifdef __IPHONE_3_2
+  return YES;
+#else
   UIViewController* popup = [self popupViewController];
   if (popup) {
     return [popup shouldAutorotateToInterfaceOrientation:interfaceOrientation];
@@ -258,6 +261,7 @@
   } else {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
   }
+#endif
 }
 
 
