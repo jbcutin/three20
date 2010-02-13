@@ -18,8 +18,10 @@
 
 #import "Three20/TTNavigator.h"
 #import "Three20/TTSplitNavigatorWindow.h"
+#import "Three20/TTURLAction.h"
 
 #import "Three20/TTGlobalUINavigator.h"
+#import "Three20/TTGlobalCore.h"
 
 #import "Three20/TTCorePreprocessorMacros.h"
 #import "Three20/TTDebug.h"
@@ -33,6 +35,8 @@
 @synthesize URLMap              = _URLMap;
 @synthesize window              = _window;
 @synthesize rootViewController  = _rootViewController;
+@synthesize showPopoverButton   = _showPopoverButton;
+@synthesize popoverButtonTitle  = _popoverButtonTitle;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -48,6 +52,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (id) init {
   if (self = [super init]) {
+    _showPopoverButton = YES;
+
     _navigators = [[NSArray alloc] initWithObjects:
                    [[[TTNavigator alloc] init] autorelease],
                    [[[TTNavigator alloc] init] autorelease],
@@ -67,7 +73,68 @@
 - (void) dealloc {
   TT_RELEASE_SAFELY(_navigators);
   TT_RELEASE_SAFELY(_rootViewController);
+  TT_RELEASE_SAFELY(_popoverButtonTitle);
+  TT_RELEASE_SAFELY(_popoverController);
   [super dealloc];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark UISplitViewControllerDelegate
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) splitViewController: (UISplitViewController*)svc
+      willHideViewController: (UIViewController*)aViewController
+           withBarButtonItem: (UIBarButtonItem*)barButtonItem
+        forPopoverController: (UIPopoverController*)pc {
+  if (!_showPopoverButton) {
+    return;
+  }
+
+  NSString* title = TTIsStringWithAnyText(_popoverButtonTitle)
+                    ? _popoverButtonTitle
+                    : [[self navigatorAtIndex:TTNavigatorSplitViewLeftSide]
+                       rootViewController].title;
+  // No title means this button isn't going to display at all. Consider setting popoverButtonTitle
+  // if you can't guarantee that your navigation view will have a title.
+  TTDASSERT(nil != title);
+  barButtonItem.title = title;
+
+  TTNavigator* rightSideNavigator = [self navigatorAtIndex:TTNavigatorSplitViewRightSide];
+  UIViewController* viewController = rightSideNavigator.rootViewController;
+  if ([viewController isKindOfClass:[UINavigationController class]]) {
+    UINavigationController* navController = (UINavigationController*)viewController;
+    [navController.navigationBar.topItem setLeftBarButtonItem:barButtonItem animated:YES];
+
+  } else {
+    // Not implemented
+    TTDASSERT(NO);
+  }
+  
+  [pc retain];
+  [_popoverController release];
+  _popoverController = pc;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) splitViewController: (UISplitViewController*)svc
+      willShowViewController: (UIViewController*)aViewController
+   invalidatingBarButtonItem: (UIBarButtonItem*)barButtonItem {
+  TTNavigator* rightSideNavigator = [self navigatorAtIndex:TTNavigatorSplitViewRightSide];
+  UIViewController* viewController = rightSideNavigator.rootViewController;
+  if ([viewController isKindOfClass:[UINavigationController class]]) {
+    UINavigationController* navController = (UINavigationController*)viewController;
+    [navController.navigationBar.topItem setLeftBarButtonItem:nil animated:YES];
+
+  } else {
+    // Not implemented
+    TTDASSERT(NO);
+  }
+  TT_RELEASE_SAFELY(_popoverController);
 }
 
 
@@ -116,14 +183,38 @@
   }
 
   _rootViewController = [[UISplitViewController alloc] init];
-  _rootViewController.viewControllers = [NSArray arrayWithObjects:
-                                         [[[UINavigationController alloc] init] autorelease],
-                                         [[[UINavigationController alloc] init] autorelease],
-                                         nil];
 
-  [self.window addSubview:_rootViewController.view];
-  
+  if (_showPopoverButton) {
+    // Currently the only thing the delegate is used for is displaying the popover.
+    _rootViewController.delegate = self;
+  }
+
   return _rootViewController;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * @public
+ */
+- (void) restoreViewControllersWithDefaultURLs:(NSArray*)urls {
+  NSMutableArray* viewControllers = [[NSMutableArray alloc]
+                                     initWithCapacity:TTNavigatorSplitViewCount];
+  
+  for (NSInteger ix = TTNavigatorSplitViewBegin; ix < TTNavigatorSplitViewEnd; ++ix) {
+    TTNavigator* navigator = [_navigators objectAtIndex:ix];
+    NSString* url = [urls objectAtIndex:ix];
+    if (![navigator restoreViewControllers]) {
+      [navigator openURLAction:[TTURLAction actionWithURLPath:url]];
+    }
+    [viewControllers addObject:navigator.rootViewController];
+  }
+
+  self.rootViewController.viewControllers = viewControllers;
+  
+  [self.window addSubview:self.rootViewController.view];
+
+  TT_RELEASE_SAFELY(viewControllers);
 }
 
 

@@ -45,6 +45,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setController:(UIViewController *)controller forNavigator:(TTNavigator*)navigator {
+#if 0
   NSInteger ix;
   for (ix = TTNavigatorSplitViewBegin; ix < TTNavigatorSplitViewEnd; ++ix) {
     TTNavigator* navigatorIter = [[TTSplitNavigator splitNavigator] navigatorAtIndex:ix];
@@ -62,6 +63,7 @@
     [viewControllers replaceObjectAtIndex:ix withObject:controller];
     splitViewController.viewControllers = viewControllers;
   }
+#endif
 }
 
 

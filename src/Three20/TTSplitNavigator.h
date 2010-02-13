@@ -31,7 +31,8 @@ typedef enum {
   TTNavigatorSplitViewBegin     = 0,
   TTNavigatorSplitViewLeftSide  = 0,  // In a split view, the left-side navigator
   TTNavigatorSplitViewRightSide,      // In a split view, the right-side navigator
-  TTNavigatorSplitViewEnd
+  TTNavigatorSplitViewEnd,
+  TTNavigatorSplitViewCount = TTNavigatorSplitViewEnd
 } TTNavigatorSplitView;
 
 
@@ -39,7 +40,7 @@ typedef enum {
  * A split view navigator designed for the iPad. This navigator contains two proper TTNavigator
  * objects, one for the left and right sides of the split view.
  */
-@interface TTSplitNavigator : NSObject {
+@interface TTSplitNavigator : NSObject <UISplitViewControllerDelegate> {
   id<TTNavigatorDelegate> _delegate;
   
   TTURLMap*               _URLMap;
@@ -48,6 +49,10 @@ typedef enum {
   UISplitViewController*  _rootViewController;
 
   NSArray*                _navigators;
+
+  BOOL                    _showPopoverButton;
+  NSString*               _popoverButtonTitle;
+  UIPopoverController*    _popoverController;
 }
 
 /**
@@ -85,6 +90,28 @@ typedef enum {
  * controller.
  */
 @property(nonatomic,readonly) UISplitViewController* rootViewController;
+
+/**
+ * Whether or not to displaly the popover button when the split view controller flips to landscape
+ * mode.
+ *
+ * @default YES
+ */
+@property(nonatomic,assign) BOOL showPopoverButton;
+
+/**
+ * The title of the popover button. If not specified, uses the title of the left-side controller.
+ *
+ * @default nil
+ */
+@property(nonatomic,copy) NSString* popoverButtonTitle;
+
+/**
+ * Attempt to restore the view controller navigation history for both sides of the split view.
+ * Also initializes the split view controller properly, so this is currently the preferred method
+ * of initializing the TTSplitNavigator.
+ */
+- (void) restoreViewControllersWithDefaultURLs:(NSArray*)urls;
 
 @end
 
