@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-#if __IPHONE_3_2 <= __IPHONE_OS_VERSION_MAX_ALLOWED
+#if defined(__IPHONE_3_2) && __IPHONE_3_2 <= __IPHONE_OS_VERSION_MAX_ALLOWED
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>

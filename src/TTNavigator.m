@@ -64,9 +64,11 @@ UIViewController* TTOpenURL(NSString* URL) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 + (TTNavigator*)navigator {
+#ifdef __IPHONE_3_2
   // If this asserts, it's because you're trying to use the single view controller navigator in
   // a split view-based app. Fix your code!
   TTDASSERT(![TTSplitNavigator isSplitNavigatorActive]);
+#endif
   static TTNavigator* navigator = nil;
   if (!navigator) {
     navigator = [[TTNavigator alloc] init];
@@ -286,6 +288,7 @@ UIViewController* TTOpenURL(NSString* URL) {
 
       } else {
         BOOL didProcess = NO;
+#ifdef __IPHONE_3_2
         if (mode == TTNavigationModeEmptyHistory) {
           if ([TTSplitNavigator isSplitNavigatorActive]) {
             [[TTSplitNavigator splitNavigator].popoverController dismissPopoverAnimated:NO];
@@ -299,6 +302,7 @@ UIViewController* TTOpenURL(NSString* URL) {
             didProcess = YES;
           }
         }
+#endif
 
         if (!didProcess) {
           [parentController addSubcontroller: controller

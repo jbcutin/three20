@@ -14,6 +14,8 @@
 // limitations under the License.
 //
 
+#if defined(__IPHONE_3_2) && __IPHONE_3_2 <= __IPHONE_OS_VERSION_MAX_ALLOWED
+
 #import "Three20/TTSplitNavigator.h"
 
 #import "Three20/TTNavigator.h"
@@ -252,3 +254,5 @@ static TTSplitNavigator* gSplitNavigator = nil;
 
 
 @end
+
+#endif

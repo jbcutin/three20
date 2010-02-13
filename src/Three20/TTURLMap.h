@@ -26,7 +26,9 @@ typedef enum {
   TTNavigationModeShare,             // a new view controller is created, cached and re-used
   TTNavigationModeModal,             // a new view controller is created and presented modally
   TTNavigationModeExternal,          // an external app will be opened
+#ifdef __IPHONE_3_2
   TTNavigationModeEmptyHistory,      // a new view controller is created and nav history emptied
+#endif
 } TTNavigationMode;
 
 @interface TTURLMap : NSObject {
@@ -89,7 +91,9 @@ typedef enum {
 - (void)from:(NSString*)URL parent:(NSString*)parentURL
         toModalViewController:(id)target selector:(SEL)selector transition:(NSInteger)transition;
 
+#ifdef __IPHONE_3_2
 - (void)from:(NSString*)URL toEmptyHistoryViewController:(id)target;
+#endif
 
 /**
  * Adds a mapping from a class to a generated URL.
