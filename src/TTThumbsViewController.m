@@ -31,9 +31,15 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // global
 
-static CGFloat kThumbnailRowHeight = 79;
-static CGFloat kThumbSize = 75;
-static CGFloat kThumbSpacing = 4;
+#ifdef __IPHONE_3_2
+static const CGFloat kThumbSize = 120;
+static const CGFloat kThumbSpacing = 6;
+static const CGFloat kThumbnailRowHeight = 126;
+#else
+static const CGFloat kThumbSize = 75;
+static const CGFloat kThumbSpacing = 4;
+static const CGFloat kThumbnailRowHeight = 79;
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
