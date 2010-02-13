@@ -79,9 +79,12 @@ BOOL TTIsPhoneSupported();
 UIDeviceOrientation TTDeviceOrientation();
 
 /**
+ * On the iPhone/iPod touch:
  * Checks if the orientation is portrait, landscape left, or landscape right.
- *
  * This helps to ignore upside down and flat orientations.
+ *
+ * On the iPad:
+ * Always returns YES.
  */
 BOOL TTIsSupportedOrientation(UIInterfaceOrientation orientation);
 

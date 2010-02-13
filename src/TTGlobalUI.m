@@ -110,6 +110,10 @@ UIDeviceOrientation TTDeviceOrientation() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 BOOL TTIsSupportedOrientation(UIInterfaceOrientation orientation) {
+#ifdef __IPHONE_3_2
+  // On the iPad, every orientation is supported.
+  return YES;
+#else
   switch (orientation) {
     case UIInterfaceOrientationPortrait:
     case UIInterfaceOrientationLandscapeLeft:
@@ -118,6 +122,7 @@ BOOL TTIsSupportedOrientation(UIInterfaceOrientation orientation) {
     default:
       return NO;
   }
+#endif
 }
 
 
