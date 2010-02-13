@@ -21,6 +21,8 @@
 #import "Three20/TTNavigator.h"
 #import "Three20/TTURLMap.h"
 
+#import "Three20/TTSplitNavigator.h"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 static NSMutableDictionary* gNavigatorURLs = nil;
@@ -274,7 +276,14 @@ static NSMutableDictionary* gPopupViewControllers = nil;
 }
 
 - (void)showBars:(BOOL)show animated:(BOOL)animated {
+#ifdef __IPHONE_3_2
+  // For now, we don't hide the status bar in split views.
+  if (![TTSplitNavigator isSplitNavigatorActive]) {
+    [[UIApplication sharedApplication] setStatusBarHidden:!show animated:animated];
+  }
+#else
   [[UIApplication sharedApplication] setStatusBarHidden:!show animated:animated];
+#endif
 
   if (animated) {
     [UIView beginAnimations:nil context:NULL];
