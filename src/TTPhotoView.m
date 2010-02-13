@@ -166,7 +166,7 @@
     CGSize captionSize = [_captionLabel sizeThatFits:CGSizeMake(textWidth, 0)];
     _captionLabel.frame = CGRectMake(marginLeft + (cx - screenBounds.size.width/2), 
                                      cy + floor(screenBounds.size.height/2
-                                                - (captionSize.height+marginBottom)),
+                                                - (captionSize.height+marginBottom) + screenOffset),
                                      textWidth, captionSize.height);
   } else {
     _captionLabel.frame = CGRectZero;
