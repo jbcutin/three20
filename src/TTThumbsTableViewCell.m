@@ -123,12 +123,10 @@ static CGFloat kDefaultThumbSize = 75;
 
 - (void)setColumnCount:(NSInteger)columnCount {
   if (_columnCount != columnCount) {
-    if (columnCount > _columnCount) {
-      for (TTThumbView* thumbView in _thumbViews) {
-        [thumbView removeFromSuperview];
-      }
-      [_thumbViews removeAllObjects];
+    for (TTThumbView* thumbView in _thumbViews) {
+      [thumbView removeFromSuperview];
     }
+    [_thumbViews removeAllObjects];
     
     _columnCount = columnCount;
     
