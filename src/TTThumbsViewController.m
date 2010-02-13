@@ -189,8 +189,13 @@ static const CGFloat kThumbnailRowHeight = 79;
 }
 
 - (void)updateTableLayout {
+#ifdef __IPHONE_3_2
+  self.tableView.contentInset = UIEdgeInsetsMake(TTToolbarHeight()+4, 0, 0, 0);
+  self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(TTToolbarHeight(), 0, 0, 0);
+#else
   self.tableView.contentInset = UIEdgeInsetsMake(TTBarsHeight()+4, 0, 0, 0);
   self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(TTBarsHeight(), 0, 0, 0);
+#endif
 }
 
 - (NSString*)URLForPhoto:(id<TTPhoto>)photo {
