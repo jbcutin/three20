@@ -16,6 +16,8 @@
 
 #import "Three20/TTNavigatorWindow.h"
 
+#if defined(__IPHONE_3_2) && __IPHONE_3_2 <= __IPHONE_OS_VERSION_MAX_ALLOWED
+
 /**
  * An internal implementation of the UIWindow object that supports shaking gestures.
  */
@@ -24,3 +26,5 @@
 }
 
 @end
+
+#endif

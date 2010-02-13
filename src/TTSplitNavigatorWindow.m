@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-#if defined(__IPHONE_3_2) && __IPHONE_3_2 <= __IPHONE_OS_VERSION_MAX_ALLOWED
-
 #import "Three20/TTSplitNavigatorWindow.h"
+
+#if defined(__IPHONE_3_2) && __IPHONE_3_2 <= __IPHONE_OS_VERSION_MAX_ALLOWED
 
 #import "Three20/TTSplitNavigator.h"
 #import "Three20/TTNavigator.h"
@@ -70,7 +70,6 @@
       UIViewController* viewController = [[TTSplitNavigator splitNavigator] navigatorAtIndex:ix].rootViewController;
       if ([viewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController* navController = (UINavigationController*)viewController;
-        UIBarButtonItem* button = [TTSplitNavigator splitNavigator].popoverButton;
         UINavigationItem* topItem = navController.navigationBar.topItem;
         [topItem setLeftBarButtonItem:[TTSplitNavigator splitNavigator].popoverButton animated:NO];
       }
