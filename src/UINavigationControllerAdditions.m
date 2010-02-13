@@ -124,7 +124,7 @@
 
 - (void)persistNavigationPath:(NSMutableArray*)path {
   for (UIViewController* controller in self.viewControllers) {
-    [self.responsibleNavigator persistController:controller path:path];
+    [controller.responsibleNavigator persistController:controller path:path];
   }
 }
 
