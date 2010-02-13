@@ -55,7 +55,7 @@
   if (animated) {
     NSString* URL = self.topViewController.originalNavigatorURL;
     UIViewAnimationTransition transition = URL
-      ? [[TTNavigator navigator].URLMap transitionForURL:URL]
+      ? [self.responsibleNavigator.URLMap transitionForURL:URL]
       : UIViewAnimationTransitionNone;
     if (transition) {
       UIViewAnimationTransition inverseTransition = [self invertTransition:transition];
@@ -124,7 +124,7 @@
 
 - (void)persistNavigationPath:(NSMutableArray*)path {
   for (UIViewController* controller in self.viewControllers) {
-    [[TTNavigator navigator] persistController:controller path:path];
+    [self.responsibleNavigator persistController:controller path:path];
   }
 }
 
