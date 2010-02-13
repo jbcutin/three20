@@ -31,6 +31,10 @@
 @implementation TTTableViewDataSource
 
 @synthesize model = _model;
+ 
+#ifdef __IPHONE_3_2
+@synthesize responsibleNavigator = _responsibleNavigator;
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // class public
@@ -93,7 +97,11 @@
   [identifier release];
 
   if ([cell isKindOfClass:[TTTableViewCell class]]) {
-    [(TTTableViewCell*)cell setObject:object];
+    TTTableViewCell* ttCell = (TTTableViewCell*)cell;
+#ifdef __IPHONE_3_2
+    [ttCell setResponsibleNavigator:_responsibleNavigator];
+#endif
+    [ttCell setObject:object];
   }
 
   [self tableView:tableView cell:cell willAppearAtIndexPath:indexPath];

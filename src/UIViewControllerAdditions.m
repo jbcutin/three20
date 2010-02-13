@@ -24,6 +24,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 static NSMutableDictionary* gNavigatorURLs = nil;
+static NSMutableDictionary* gResponsibleNavigators = nil;
 static NSMutableDictionary* gSuperControllers = nil;
 static NSMutableDictionary* gPopupViewControllers = nil;
 
@@ -111,6 +112,23 @@ static NSMutableDictionary* gPopupViewControllers = nil;
     [gNavigatorURLs setObject:URL forKey:key];
   } else {
     [gNavigatorURLs removeObjectForKey:key];
+  }
+}
+
+- (TTNavigator*)responsibleNavigator {
+  NSString* key = [NSString stringWithFormat:@"%d", self.hash];
+  return [gResponsibleNavigators objectForKey:key];
+}
+
+- (void)setResponsibleNavigator:(TTNavigator*)navigator {
+  NSString* key = [NSString stringWithFormat:@"%d", self.hash];
+  if (nil != navigator) {
+    if (!gResponsibleNavigators) {
+      gResponsibleNavigators = [[NSMutableDictionary alloc] init];
+    }
+    [gResponsibleNavigators setObject:navigator forKey:key];
+  } else {
+    [gResponsibleNavigators removeObjectForKey:key];
   }
 }
 

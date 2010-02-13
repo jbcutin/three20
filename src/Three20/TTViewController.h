@@ -18,6 +18,7 @@
 #import <UIKit/UIKit.h>
 
 @class TTTableViewController, TTSearchDisplayController;
+@class TTNavigator;
 
 /**
  * A view controller with some useful additions.

@@ -25,6 +25,7 @@
 #import "Three20/TTTextEditor.h"
 #import "Three20/TTURLMap.h"
 #import "Three20/TTNavigator.h"
+#import "Three20/TTSplitNavigator.h"
 #import "Three20/TTURLCache.h"
 #import "Three20/TTDefaultStyleSheet.h"
 
@@ -83,10 +84,26 @@ static const CGFloat kDefaultMessageImageHeight = 34;
 
     TTTableLinkedItem* item = object;
     if (item.URL) {
-      TTNavigationMode navigationMode = [[TTNavigator navigator].URLMap
-                                         navigationModeForURL:item.URL];
+      TTNavigator* navigator = nil;
+      
+      BOOL isDifferentNavigator = NO;
+#ifdef __IPHONE_3_2
+      if ([TTSplitNavigator isSplitNavigatorActive]) {
+        navigator = [[TTSplitNavigator splitNavigator] navigatorForURLPath:item.URL];
+        isDifferentNavigator = navigator != self.responsibleNavigator;
+      } else {
+        navigator = [TTNavigator navigator];
+      }
+#else
+      navigator = [TTNavigator navigator];
+#endif
+
+      TTNavigationMode navigationMode = [navigator.URLMap
+         navigationModeForURL:item.URL];
       if (item.accessoryURL) {
         self.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+      } else if (isDifferentNavigator) {
+        self.accessoryType = UITableViewCellAccessoryNone;
       } else if (navigationMode == TTNavigationModeCreate ||
                  navigationMode == TTNavigationModeShare) {
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

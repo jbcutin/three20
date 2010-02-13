@@ -126,10 +126,22 @@
 @end
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+ 
+#ifdef __IPHONE_3_2
+@class TTNavigator;
+#endif
 
 @interface TTTableViewDataSource : NSObject <TTTableViewDataSource> {
   id<TTModel> _model;
+
+#ifdef __IPHONE_3_2
+  TTNavigator* _responsibleNavigator;
+#endif
 }
+
+#ifdef __IPHONE_3_2
+@property(nonatomic,retain) TTNavigator* responsibleNavigator;
+#endif
 
 @end
 

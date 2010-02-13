@@ -26,8 +26,13 @@
 #import "Three20/TTTableView.h"
 #import "Three20/TTStyledTextLabel.h"
 #import "Three20/TTNavigator.h"
+#import "Three20/TTURLAction.h"
 #import "Three20/TTDefaultStyleSheet.h"
 #import "Three20/TTURLRequestQueue.h"
+
+#ifdef __IPHONE_3_2
+#import "Three20/TTSplitNavigator.h"
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,7 +108,18 @@
   if ([object isKindOfClass:[TTTableLinkedItem class]]) {
     TTTableLinkedItem* item = object;
     if (item.URL && [_controller shouldOpenURL:item.URL]) {
+#ifdef __IPHONE_3_2
+      if ([TTSplitNavigator isSplitNavigatorActive]) {
+        TTNavigator* navigator = [[TTSplitNavigator splitNavigator] navigatorForURLPath:item.URL];
+        [navigator openURLAction:
+                [[TTURLAction actionWithURLPath:item.URL]
+                 applyAnimated:YES]];
+      } else {
+        TTOpenURL(item.URL);
+      }
+#else
       TTOpenURL(item.URL);
+#endif
     }
 
     if ([object isKindOfClass:[TTTableButton class]]) {

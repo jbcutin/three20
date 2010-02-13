@@ -26,6 +26,7 @@ typedef enum {
   TTNavigationModeShare,             // a new view controller is created, cached and re-used
   TTNavigationModeModal,             // a new view controller is created and presented modally
   TTNavigationModeExternal,          // an external app will be opened
+  TTNavigationModeEmptyHistory,      // a new view controller is created and nav history emptied
 } TTNavigationMode;
 
 @interface TTURLMap : NSObject {
@@ -87,6 +88,8 @@ typedef enum {
 - (void)from:(NSString*)URL toModalViewController:(id)target transition:(NSInteger)transition;
 - (void)from:(NSString*)URL parent:(NSString*)parentURL
         toModalViewController:(id)target selector:(SEL)selector transition:(NSInteger)transition;
+
+- (void)from:(NSString*)URL toEmptyHistoryViewController:(id)target;
 
 /**
  * Adds a mapping from a class to a generated URL.
@@ -160,6 +163,11 @@ typedef enum {
  * Returns YES if there is a registered pattern with the URL scheme.
  */
 - (BOOL)isSchemeSupported:(NSString*)scheme;
+
+/**
+ * Returns YES if the URL path is mapped to anything.
+ */
+- (BOOL)isURLPathSupported:(NSString*)urlPath;
 
 /**
  * Returns YES if the URL is destined for an external app.

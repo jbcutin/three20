@@ -252,7 +252,7 @@ UIViewController* TTOpenURL(NSString* URL) {
                  animated: (BOOL)animated
                transition: (NSInteger)transition {
   BOOL didPresentNewController = YES;
-
+  
   if (nil == _rootViewController) {
     [self setRootViewController:controller];
 
@@ -285,9 +285,26 @@ UIViewController* TTOpenURL(NSString* URL) {
                           transition: transition];
 
       } else {
-        [parentController addSubcontroller: controller
-                                  animated: animated
-                                transition: transition];
+        BOOL didProcess = NO;
+        if (mode == TTNavigationModeEmptyHistory) {
+          if ([TTSplitNavigator isSplitNavigatorActive]) {
+            [[TTSplitNavigator splitNavigator].popoverController dismissPopoverAnimated:NO];
+          }
+
+          if ([_rootViewController isKindOfClass:[UINavigationController class]]) {
+            UINavigationController* navController = (UINavigationController*)_rootViewController;
+            UIBarButtonItem* topItem = navController.navigationBar.topItem.leftBarButtonItem;
+            [navController setViewControllers:[NSArray arrayWithObject:controller] animated:NO];
+            navController.navigationBar.topItem.leftBarButtonItem = topItem;
+            didProcess = YES;
+          }
+        }
+
+        if (!didProcess) {
+          [parentController addSubcontroller: controller
+                                    animated: animated
+                                  transition: transition];
+        }
       }
     }
   }
@@ -767,7 +784,7 @@ UIViewController* TTOpenURL(NSString* URL) {
   if (object) {
     UIViewController* controller = object;
     controller.originalNavigatorURL = URL;
-
+    controller.responsibleNavigator = self;
     if (_delayCount) {
       if (!_delayedControllers) {
         _delayedControllers = [[NSMutableArray alloc] initWithObjects:controller,nil];

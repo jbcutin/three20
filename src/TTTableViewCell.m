@@ -16,11 +16,19 @@
 
 #import "Three20/TTTableViewCell.h"
 
+#ifdef __IPHONE_3_2
+#import "Three20/TTNavigator.h"
+#endif
+
 #import "Three20/TTGlobalUI.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 @implementation TTTableViewCell
+ 
+#ifdef __IPHONE_3_2
+@synthesize responsibleNavigator = _responsibleNavigator;
+#endif
 
 + (CGFloat)tableView:(UITableView*)tableView rowHeightForObject:(id)object {
   return TT_ROW_HEIGHT;

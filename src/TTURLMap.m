@@ -321,6 +321,18 @@
 /**
  * @public
  */
+- (void)from:(NSString*)URL toEmptyHistoryViewController:(id)target {
+  TTURLNavigatorPattern* pattern = [[TTURLNavigatorPattern alloc] initWithTarget:target
+                                                                            mode:TTNavigationModeEmptyHistory];
+  [self addObjectPattern:pattern forURL:URL];
+  [pattern release];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * @public
+ */
 - (void)from:(NSString*)URL toModalViewController:(id)target {
   TTURLNavigatorPattern* pattern = [[TTURLNavigatorPattern alloc] initWithTarget:target
                                                                   mode:TTNavigationModeModal];
@@ -555,6 +567,17 @@
  */
 - (BOOL)isSchemeSupported:(NSString*)scheme {
   return nil != scheme && !![_schemes objectForKey:scheme];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * @public
+ */
+- (BOOL)isURLPathSupported:(NSString*)urlPath {
+  NSURL* url = [NSURL URLWithString:urlPath];
+  TTURLNavigatorPattern* pattern  = [self matchObjectPattern:url];
+  return nil != pattern;
 }
 
 

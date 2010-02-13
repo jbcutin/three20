@@ -20,6 +20,8 @@
 #import "Three20/TTSplitNavigatorWindow.h"
 #import "Three20/TTURLAction.h"
 
+#import "Three20/TTURLMap.h"
+
 #import "Three20/TTGlobalUINavigator.h"
 #import "Three20/TTGlobalCore.h"
 
@@ -38,6 +40,8 @@ static TTSplitNavigator* gSplitNavigator = nil;
 @synthesize rootViewController  = _rootViewController;
 @synthesize showPopoverButton   = _showPopoverButton;
 @synthesize popoverButtonTitle  = _popoverButtonTitle;
+@synthesize popoverController   = _popoverController;
+@synthesize popoverButton       = _popoverButton;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,6 +85,7 @@ static TTSplitNavigator* gSplitNavigator = nil;
   TT_RELEASE_SAFELY(_rootViewController);
   TT_RELEASE_SAFELY(_popoverButtonTitle);
   TT_RELEASE_SAFELY(_popoverController);
+  TT_RELEASE_SAFELY(_popoverButton);
   [super dealloc];
 }
 
@@ -120,9 +125,10 @@ static TTSplitNavigator* gSplitNavigator = nil;
     TTDASSERT(NO);
   }
   
-  [pc retain];
-  [_popoverController release];
-  _popoverController = pc;
+  [barButtonItem retain];
+  [_popoverButton release];
+  _popoverButton = barButtonItem;
+  self.popoverController = pc;
 }
 
 
@@ -140,6 +146,8 @@ static TTSplitNavigator* gSplitNavigator = nil;
     // Not implemented
     TTDASSERT(NO);
   }
+  
+  TT_RELEASE_SAFELY(_popoverButton);
   TT_RELEASE_SAFELY(_popoverController);
 }
 
@@ -157,6 +165,25 @@ static TTSplitNavigator* gSplitNavigator = nil;
 - (TTNavigator*) navigatorAtIndex:(TTNavigatorSplitView)index {
   TTDASSERT(index >= 0 && index <= 1);
   return [_navigators objectAtIndex:index];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * @public
+ */
+- (TTNavigator*)navigatorForURLPath:(NSString*)urlPath {
+  TTNavigator* navigator = nil;
+
+  for (NSInteger ix = TTNavigatorSplitViewEnd - 1; ix >= TTNavigatorSplitViewBegin; --ix) {
+    TTNavigator* navigatorIter = [_navigators objectAtIndex:ix];
+    if ([navigatorIter.URLMap isURLPathSupported:urlPath]) {
+      navigator = navigatorIter;
+      break;
+    }
+  }
+
+  return navigator;
 }
 
 

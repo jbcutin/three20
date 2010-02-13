@@ -53,6 +53,7 @@ typedef enum {
   BOOL                    _showPopoverButton;
   NSString*               _popoverButtonTitle;
   UIPopoverController*    _popoverController;
+  UIBarButtonItem*        _popoverButton;
 }
 
 /**
@@ -72,6 +73,12 @@ typedef enum {
  * view controller. Index 1 maps to the right view controller.
  */
 - (TTNavigator*)navigatorAtIndex:(TTNavigatorSplitView)index;
+
+/**
+ * Retrieve the TTNavigator that has the given urlPath mapped in its TTURLMap.
+ * Gives priority to the right side view if both navigators implement the URL.
+ */
+- (TTNavigator*)navigatorForURLPath:(NSString*)urlPath;
 
 /**
  * The URL map used to translate between URLs and view controllers.
@@ -110,6 +117,9 @@ typedef enum {
  * @default nil
  */
 @property(nonatomic,copy) NSString* popoverButtonTitle;
+
+@property(nonatomic,retain) UIPopoverController* popoverController;
+@property(nonatomic,retain) UIBarButtonItem* popoverButton;
 
 /**
  * Attempt to restore the view controller navigation history for both sides of the split view.

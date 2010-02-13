@@ -45,7 +45,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setController:(UIViewController *)controller forNavigator:(TTNavigator*)navigator {
-#if 0
+  [[TTSplitNavigator splitNavigator].popoverController dismissPopoverAnimated:NO];
+
   NSInteger ix;
   for (ix = TTNavigatorSplitViewBegin; ix < TTNavigatorSplitViewEnd; ++ix) {
     TTNavigator* navigatorIter = [[TTSplitNavigator splitNavigator] navigatorAtIndex:ix];
@@ -62,8 +63,17 @@
     NSMutableArray* viewControllers = [splitViewController.viewControllers mutableCopy];
     [viewControllers replaceObjectAtIndex:ix withObject:controller];
     splitViewController.viewControllers = viewControllers;
+
+    if (ix == TTNavigatorSplitViewRightSide) {
+      UIViewController* viewController = [[TTSplitNavigator splitNavigator] navigatorAtIndex:ix].rootViewController;
+      if ([viewController isKindOfClass:[UINavigationController class]]) {
+        UINavigationController* navController = (UINavigationController*)viewController;
+        UIBarButtonItem* button = [TTSplitNavigator splitNavigator].popoverButton;
+        UINavigationItem* topItem = navController.navigationBar.topItem;
+        [topItem setLeftBarButtonItem:[TTSplitNavigator splitNavigator].popoverButton animated:NO];
+      }
+    }
   }
-#endif
 }
 
 
