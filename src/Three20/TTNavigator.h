@@ -31,15 +31,14 @@ typedef enum {
 /**
  * A URL-based navigation system with built-in persistence.
  *
- * On the iPhone/iPod touch there is one global TTNavigator that should be used to govern all
- * URL navigation within the app. This global navigator is accessible via [TTNavigator navigator].
+ * If your app is designed around a single full-screen controller, then there is equivalently one
+ * global TTNavigator that should be used to govern all URL navigation within the app.
+ * This global navigator is accessible via [TTNavigator navigator].
  *
- * On the iPad it is possible to make use of a split view controller, in which case you will
- * make use of two distinct TTNavigator objects. These navigator objects are accessible via:
- * [TTNavigator navigatorAtIndex:]. The TTNavigators correspond to view controllers in the split
- * view that are laid out in left-to-right fashion, such that the TTNavigator at index 0
- * corresponds to the controller on the left side, and the TTNavigator at index 1 corresponds to
- * the controller on the right side.
+ * If your app is designed around a split view controller, then you should not access the navigator
+ * through [TTNavigator navigator]. Instead, use
+ * [[TTSplitNavigator splitNavigator] navigatorAtIndex:] to access the navigator for the given
+ * controller.
  */
 @interface TTNavigator : NSObject {
   id<TTNavigatorDelegate>     _delegate;
@@ -59,7 +58,7 @@ typedef enum {
   BOOL                        _supportsShakeToReload;
   BOOL                        _opensExternalURLs;
 
-  NSInteger                   _splitViewIndex;
+  NSString*                   _uniquePrefix;
 }
 
 /**
@@ -67,18 +66,6 @@ typedef enum {
  * In general, use this for iPhone and iPod touches and single controller-based iPad applications.
  */
 + (TTNavigator*)navigator;
-
-/**
- * Access the TTNavigator corresponding to a given side of a split view controller.
- * The indices map directly to the indices of a split view controller. Index 0 maps to the left
- * view controller. Index 1 maps to the right view controller.
- *
- * Note: You should avoid mixing use of the single global navigator and the split view navigators.
- *
- * This is only available on the iPad.
- */
-+ (TTNavigator*)navigatorAtIndex:(NSInteger)index __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_3_2);
-
 
 @property(nonatomic,assign) id<TTNavigatorDelegate> delegate;
 
@@ -94,6 +81,9 @@ typedef enum {
  *
  * By default retrieves the keyWindow. If there is no keyWindow, creates a new
  * TTNavigatorWindow.
+ *
+ * In a split navigator, this will be the UISplitViewController. Use
+ * [TTSplitNavigator splitNavigator].window to get the app window.
  */
 @property (nonatomic, retain) UIWindow* window;
 
@@ -164,11 +154,11 @@ typedef enum {
 @property (nonatomic, readonly) BOOL isDelayed;
 
 /**
- * The corresponding split view index for this TTNavigator.
+ * A unique prefix used when storing the navigation history in the user defaults.
  *
- * Only valid when using split view TTNavigators.
+ * @default nil
  */
-@property(nonatomic,readonly) NSInteger splitViewIndex __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_3_2);
+@property(nonatomic,copy) NSString* uniquePrefix;
 
 /**
  * Load and display the view controller with a pattern that matches the URL.

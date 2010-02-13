@@ -31,6 +31,9 @@
 #import "Three20/TTURLAction.h"
 #import "Three20/TTURLMap.h"
 #import "Three20/TTURLObject.h"
+#ifdef __IPHONE_3_2
+#import "Three20/TTSplitNavigator.h"
+#endif
 
 #import "Three20/TTUserInfo.h"
 #import "Three20/TTURLCache.h"

@@ -16,7 +16,10 @@
 
 #import "Three20/TTNavigatorWindow.h"
 
+<<<<<<< HEAD
 #import "Three20/TTNavigator.h"
+=======
+>>>>>>> Implement Split Navigator.
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,10 +28,15 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 - (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
   if (event.type == UIEventSubtypeMotionShake && [TTNavigator navigator].supportsShakeToReload) {
     [[TTNavigator navigator] reload];
   }
+=======
+- (void)setController:(UIViewController *)controller forNavigator:(TTNavigator*)navigator {
+  [self addSubview:controller.view];
+>>>>>>> Implement Split Navigator.
 }
 
 

@@ -30,6 +30,12 @@
 #import "Three20/TTSearchDisplayController.h"
 #import "Three20/TTTableViewController.h"
 
+#import "Three20/TTSingleNavigatorWindow.h"
+
+static NSString* kNavigatorDefaultKeyPrefix           = @"TTNavigator";
+static NSString* kNavigatorHistoryKeySuffix           = @"History";
+static NSString* kNavigatorHistoryTimeKeySuffix       = @"HistoryTime";
+static NSString* kNavigatorHistoryImportantKeySuffix  = @"HistoryImportant";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 UIViewController* TTOpenURL(NSString* URL) {
@@ -37,16 +43,6 @@ UIViewController* TTOpenURL(NSString* URL) {
     [[TTURLAction actionWithURLPath:URL]
                       applyAnimated:YES]];
 }
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
-@interface TTNavigator()
-
-- (id)initWithIndex:(NSInteger)index;
-
-@end
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -62,7 +58,7 @@ UIViewController* TTOpenURL(NSString* URL) {
 @synthesize persistenceMode           = _persistenceMode;
 @synthesize supportsShakeToReload     = _supportsShakeToReload;
 @synthesize opensExternalURLs         = _opensExternalURLs;
-@synthesize splitViewIndex            = _splitViewIndex;
+@synthesize uniquePrefix              = _uniquePrefix;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,32 +68,6 @@ UIViewController* TTOpenURL(NSString* URL) {
     navigator = [[TTNavigator alloc] init];
   }
   return navigator;
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-+ (TTNavigator*)navigatorAtIndex:(NSInteger)index {
-#if __IPHONE_3_2
-  static TTNavigator* leftHandNavigator = nil;
-  static TTNavigator* rightHandNavigator = nil;
-
-  TTNavigator* navigator = nil;
-  if (0 == index) {
-    leftHandNavigator = [[TTNavigator alloc] initWithIndex:index];
-    navigator = leftHandNavigator;
-
-  } else if (1 == index) {
-    rightHandNavigator = [[TTNavigator alloc] initWithIndex:index];
-    navigator = rightHandNavigator;
-  }
-
-  return navigator;
-
-#else
-  // This method is only available for OS 3.2.
-  TTDASSERT(NO);
-  return nil;
-#endif
 }
 
 
@@ -179,7 +149,12 @@ UIViewController* TTOpenURL(NSString* URL) {
   if (controller != _rootViewController) {
     [_rootViewController release];
     _rootViewController = [controller retain];
-    [self.window addSubview:_rootViewController.view];
+
+    if ([self.window isKindOfClass:[TTNavigatorWindow class]]) {
+      [(TTNavigatorWindow*)self.window setController:_rootViewController forNavigator:self];
+    } else {
+      [self.window addSubview:_rootViewController.view];
+    }
   }
 }
 
@@ -461,20 +436,8 @@ UIViewController* TTOpenURL(NSString* URL) {
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-- (id)initWithIndex:(NSInteger)index {
-  if (self = [self init]) {
-    _splitViewIndex = index;
-  }
-
-  return self;
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)init {
   if (self = [super init]) {
-    _splitViewIndex = -1;
-
     _URLMap = [[TTURLMap alloc] init];
     _persistenceMode = TTNavigatorPersistenceModeNone;
 
@@ -504,6 +467,7 @@ UIViewController* TTOpenURL(NSString* URL) {
   TT_RELEASE_SAFELY(_rootViewController);
   TT_RELEASE_SAFELY(_delayedControllers);
   TT_RELEASE_SAFELY(_URLMap);
+  TT_RELEASE_SAFELY(_uniquePrefix);
 
   [super dealloc];
 }
@@ -534,14 +498,17 @@ UIViewController* TTOpenURL(NSString* URL) {
  * @public
  */
 - (UIWindow*)window {
+  UIWindow* resultWindow = nil;
   if (nil == _window) {
     UIWindow* keyWindow = [UIApplication sharedApplication].keyWindow;
     if (nil != keyWindow) {
       _window = [keyWindow retain];
+      resultWindow = keyWindow;
 
     } else {
-      _window = [[TTNavigatorWindow alloc] initWithFrame:TTScreenBounds()];
+      _window = [[TTSingleNavigatorWindow alloc] initWithFrame:TTScreenBounds()];
       [_window makeKeyAndVisible];
+      resultWindow = _window;
     }
   }
   return _window;
@@ -875,14 +842,25 @@ UIViewController* TTOpenURL(NSString* URL) {
   }
 
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  NSString* keyPrefix = TTIsStringWithAnyText(_uniquePrefix)
+                        ? _uniquePrefix : kNavigatorDefaultKeyPrefix;
+  NSString* historyKey = [keyPrefix
+                          stringByAppendingString:kNavigatorHistoryKeySuffix];
+  NSString* historyTimeKey = [keyPrefix
+                              stringByAppendingString:kNavigatorHistoryTimeKeySuffix];
+  NSString* historyImportantKey = [keyPrefix
+                                   stringByAppendingString:kNavigatorHistoryImportantKeySuffix];
   if (path.count) {
-    [defaults setObject:path forKey:@"TTNavigatorHistory"];
-    [defaults setObject:[NSDate date] forKey:@"TTNavigatorHistoryTime"];
-    [defaults setObject:[NSNumber numberWithInt:important] forKey:@"TTNavigatorHistoryImportant"];
+    [defaults setObject:path
+                 forKey:historyKey];
+    [defaults setObject:[NSDate date]
+                 forKey:historyTimeKey];
+    [defaults setObject:[NSNumber numberWithInt:important]
+                 forKey:historyImportantKey];
   } else {
-    [defaults removeObjectForKey:@"TTNavigatorHistory"];
-    [defaults removeObjectForKey:@"TTNavigatorHistoryTime"];
-    [defaults removeObjectForKey:@"TTNavigatorHistoryImportant"];
+    [defaults removeObjectForKey:historyKey];
+    [defaults removeObjectForKey:historyTimeKey];
+    [defaults removeObjectForKey:historyImportantKey];
   }
   [defaults synchronize];
 }
@@ -894,9 +872,19 @@ UIViewController* TTOpenURL(NSString* URL) {
  */
 - (UIViewController*)restoreViewControllers {
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  NSDate* timestamp = [defaults objectForKey:@"TTNavigatorHistoryTime"];
-  NSArray* path = [defaults objectForKey:@"TTNavigatorHistory"];
-  BOOL important = [[defaults objectForKey:@"TTNavigatorHistoryImportant"] boolValue];
+  
+  NSString* keyPrefix = TTIsStringWithAnyText(_uniquePrefix)
+                        ? _uniquePrefix : kNavigatorDefaultKeyPrefix;
+  NSString* historyKey = [keyPrefix
+                          stringByAppendingString:kNavigatorHistoryKeySuffix];
+  NSString* historyTimeKey = [keyPrefix
+                              stringByAppendingString:kNavigatorHistoryTimeKeySuffix];
+  NSString* historyImportantKey = [keyPrefix
+                                   stringByAppendingString:kNavigatorHistoryImportantKeySuffix];
+
+  NSDate* timestamp = [defaults objectForKey:historyTimeKey];
+  NSArray* path = [defaults objectForKey:historyKey];
+  BOOL important = [[defaults objectForKey:historyImportantKey] boolValue];
   TTDCONDITIONLOG(TTDFLAG_NAVIGATOR, @"DEBUG RESTORE %@ FROM %@",
     path, [timestamp formatRelativeTime]);
 
@@ -1017,9 +1005,19 @@ UIViewController* TTOpenURL(NSString* URL) {
  */
 - (void)resetDefaults {
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  [defaults removeObjectForKey:@"TTNavigatorHistory"];
-  [defaults removeObjectForKey:@"TTNavigatorHistoryTime"];
-  [defaults removeObjectForKey:@"TTNavigatorHistoryImportant"];
+
+  NSString* keyPrefix = TTIsStringWithAnyText(_uniquePrefix)
+                        ? _uniquePrefix : kNavigatorDefaultKeyPrefix;
+  NSString* historyKey = [keyPrefix
+                          stringByAppendingString:kNavigatorHistoryKeySuffix];
+  NSString* historyTimeKey = [keyPrefix
+                              stringByAppendingString:kNavigatorHistoryTimeKeySuffix];
+  NSString* historyImportantKey = [keyPrefix
+                                   stringByAppendingString:kNavigatorHistoryImportantKeySuffix];
+
+  [defaults removeObjectForKey:historyKey];
+  [defaults removeObjectForKey:historyTimeKey];
+  [defaults removeObjectForKey:historyImportantKey];
   [defaults synchronize];
 }
 
