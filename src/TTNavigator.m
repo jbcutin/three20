@@ -31,6 +31,7 @@
 #import "Three20/TTTableViewController.h"
 
 #import "Three20/TTSingleNavigatorWindow.h"
+#import "Three20/TTSplitNavigator.h"
 
 static NSString* kNavigatorDefaultKeyPrefix           = @"TTNavigator";
 static NSString* kNavigatorHistoryKeySuffix           = @"History";
@@ -63,6 +64,9 @@ UIViewController* TTOpenURL(NSString* URL) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 + (TTNavigator*)navigator {
+  // If this asserts, it's because you're trying to use the single view controller navigator in
+  // a split view-based app. Fix your code!
+  TTDASSERT(![TTSplitNavigator isSplitNavigatorActive]);
   static TTNavigator* navigator = nil;
   if (!navigator) {
     navigator = [[TTNavigator alloc] init];

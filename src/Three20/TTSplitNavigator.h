@@ -62,6 +62,11 @@ typedef enum {
 + (TTSplitNavigator*)splitNavigator;
 
 /**
+ * @return YES if the global splitNavigator object has been created.
+ */
++ (BOOL) isSplitNavigatorActive;
+
+/**
  * Access the TTNavigator corresponding to a given side of a split view controller.
  * The indices map directly to the indices of a split view controller. Index 0 maps to the left
  * view controller. Index 1 maps to the right view controller.
