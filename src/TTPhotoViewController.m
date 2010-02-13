@@ -324,7 +324,11 @@ static const NSInteger kActivityLabelTag = 96;
                                                      target: nil
                                                      action: nil] autorelease];
 
+#ifdef __IPHONE_3_2
+    self.statusBarStyle = UIStatusBarStyleBlackOpaque;
+#else
     self.statusBarStyle = UIStatusBarStyleBlackTranslucent;
+#endif
     self.navigationBarStyle = UIBarStyleBlackTranslucent;
     self.navigationBarTintColor = nil;
     self.wantsFullScreenLayout = YES;
