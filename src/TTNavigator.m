@@ -42,6 +42,16 @@ UIViewController* TTOpenURL(NSString* URL) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+@interface TTNavigator()
+
+- (id)initWithIndex:(NSInteger)index;
+
+@end
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 @implementation TTNavigator
 
 @synthesize delegate                  = _delegate;
@@ -52,6 +62,7 @@ UIViewController* TTOpenURL(NSString* URL) {
 @synthesize persistenceMode           = _persistenceMode;
 @synthesize supportsShakeToReload     = _supportsShakeToReload;
 @synthesize opensExternalURLs         = _opensExternalURLs;
+@synthesize splitViewIndex            = _splitViewIndex;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,6 +72,32 @@ UIViewController* TTOpenURL(NSString* URL) {
     navigator = [[TTNavigator alloc] init];
   }
   return navigator;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
++ (TTNavigator*)navigatorAtIndex:(NSInteger)index {
+#if __IPHONE_3_2
+  static TTNavigator* leftHandNavigator = nil;
+  static TTNavigator* rightHandNavigator = nil;
+
+  TTNavigator* navigator = nil;
+  if (0 == index) {
+    leftHandNavigator = [[TTNavigator alloc] initWithIndex:index];
+    navigator = leftHandNavigator;
+
+  } else if (1 == index) {
+    rightHandNavigator = [[TTNavigator alloc] initWithIndex:index];
+    navigator = rightHandNavigator;
+  }
+
+  return navigator;
+
+#else
+  // This method is only available for OS 3.2.
+  TTDASSERT(NO);
+  return nil;
+#endif
 }
 
 
@@ -424,8 +461,20 @@ UIViewController* TTOpenURL(NSString* URL) {
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+- (id)initWithIndex:(NSInteger)index {
+  if (self = [self init]) {
+    _splitViewIndex = index;
+  }
+
+  return self;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 - (id)init {
   if (self = [super init]) {
+    _splitViewIndex = -1;
+
     _URLMap = [[TTURLMap alloc] init];
     _persistenceMode = TTNavigatorPersistenceModeNone;
 

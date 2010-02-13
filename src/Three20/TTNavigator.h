@@ -30,6 +30,16 @@ typedef enum {
 
 /**
  * A URL-based navigation system with built-in persistence.
+ *
+ * On the iPhone/iPod touch there is one global TTNavigator that should be used to govern all
+ * URL navigation within the app. This global navigator is accessible via [TTNavigator navigator].
+ *
+ * On the iPad it is possible to make use of a split view controller, in which case you will
+ * make use of two distinct TTNavigator objects. These navigator objects are accessible via:
+ * [TTNavigator navigatorAtIndex:]. The TTNavigators correspond to view controllers in the split
+ * view that are laid out in left-to-right fashion, such that the TTNavigator at index 0
+ * corresponds to the controller on the left side, and the TTNavigator at index 1 corresponds to
+ * the controller on the right side.
  */
 @interface TTNavigator : NSObject {
   id<TTNavigatorDelegate>     _delegate;
@@ -48,9 +58,29 @@ typedef enum {
 
   BOOL                        _supportsShakeToReload;
   BOOL                        _opensExternalURLs;
+
+  NSInteger                   _splitViewIndex;
 }
 
-@property (nonatomic, assign) id<TTNavigatorDelegate> delegate;
+/**
+ * Access the single global navigator. Use this navigator when your app is a single controller.
+ * In general, use this for iPhone and iPod touches and single controller-based iPad applications.
+ */
++ (TTNavigator*)navigator;
+
+/**
+ * Access the TTNavigator corresponding to a given side of a split view controller.
+ * The indices map directly to the indices of a split view controller. Index 0 maps to the left
+ * view controller. Index 1 maps to the right view controller.
+ *
+ * Note: You should avoid mixing use of the single global navigator and the split view navigators.
+ *
+ * This is only available on the iPad.
+ */
++ (TTNavigator*)navigatorAtIndex:(NSInteger)index __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_3_2);
+
+
+@property(nonatomic,assign) id<TTNavigatorDelegate> delegate;
 
 /**
  * The URL map used to translate between URLs and view controllers.
@@ -133,8 +163,12 @@ typedef enum {
  */
 @property (nonatomic, readonly) BOOL isDelayed;
 
-
-+ (TTNavigator*)navigator;
+/**
+ * The corresponding split view index for this TTNavigator.
+ *
+ * Only valid when using split view TTNavigators.
+ */
+@property(nonatomic,readonly) NSInteger splitViewIndex __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_3_2);
 
 /**
  * Load and display the view controller with a pattern that matches the URL.
