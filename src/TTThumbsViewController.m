@@ -285,7 +285,7 @@ static const CGFloat kThumbnailRowHeight = 79;
 // UIViewController (TTCategory)
 
 - (BOOL)persistView:(NSMutableDictionary*)state {
-  NSString* delegate = [[TTNavigator navigator] pathForObject:_delegate];
+  NSString* delegate = [self.responsibleNavigator pathForObject:_delegate];
   if (delegate) {
     [state setObject:delegate forKey:@"delegate"];
   }
@@ -296,7 +296,7 @@ static const CGFloat kThumbnailRowHeight = 79;
   [super restoreView:state];
   NSString* delegate = [state objectForKey:@"delegate"];
   if (delegate) {
-    self.delegate = [[TTNavigator navigator] objectForPath:delegate];
+    self.delegate = [self.responsibleNavigator objectForPath:delegate];
   }
 }
 
