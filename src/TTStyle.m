@@ -1188,9 +1188,17 @@ static const NSInteger kDefaultLightSource = 125;
 
   CGContextRef ctx = UIGraphicsGetCurrentContext();
   CGContextSaveGState(ctx);
+  
+  CGSize shadowOffset;
+#ifdef __IPHONE_3_2
+  shadowOffset = CGSizeMake(_offset.width, _offset.height);
+#else
+  // On older SDKs it seems that the shadow vertical offset is upside down. Strange.
+  shadowOffset = CGSizeMake(_offset.width, -_offset.height);
+#endif
 
   [context.shape addToPath:context.frame];
-  CGContextSetShadowWithColor(ctx, CGSizeMake(_offset.width, -_offset.height), _blur,
+  CGContextSetShadowWithColor(ctx, shadowOffset, _blur,
                               _color.CGColor);
   CGContextBeginTransparencyLayer(ctx, nil);
   [self.next draw:context];
