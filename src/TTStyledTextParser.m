@@ -94,6 +94,7 @@
       if (endRange.location == NSNotFound) {
         NSString* URL = [string substringWithRange:searchRange];
         TTStyledLinkNode* node = [[[TTStyledLinkNode alloc] initWithText:URL] autorelease];
+        node.navigator = _navigator;
         node.URL = URL;
         [self addNode:node];
         break;
@@ -102,6 +103,7 @@
                                              endRange.location - startRange.location);
         NSString* URL = [string substringWithRange:URLRange];
         TTStyledLinkNode* node = [[[TTStyledLinkNode alloc] initWithText:URL] autorelease];
+        node.navigator = _navigator;
         node.URL = URL;
         [self addNode:node];
         index = endRange.location;
@@ -112,6 +114,16 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // NSObject
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+- (id)initWithNavigator:(TTNavigator*)navigator {
+  if (self = [self init]) {
+    _navigator = [navigator retain];
+  }
+  return self;
+}
+
 
 - (id)init {
   if (self = [super init]) {
@@ -130,6 +142,7 @@
   TT_RELEASE_SAFELY(_rootNode);
   TT_RELEASE_SAFELY(_chars);
   TT_RELEASE_SAFELY(_stack);
+  TT_RELEASE_SAFELY(_navigator);
   [super dealloc];
 }
 
@@ -163,6 +176,7 @@
   } else if ([tag isEqualToString:@"a"]) {
     TTStyledLinkNode* node = [[[TTStyledLinkNode alloc] init] autorelease];
     node.URL =  [attributeDict objectForKey:@"href"];
+    node.navigator = _navigator;
     [self pushNode:node];
   } else if ([tag isEqualToString:@"button"]) {
     TTStyledButtonNode* node = [[[TTStyledButtonNode alloc] init] autorelease];

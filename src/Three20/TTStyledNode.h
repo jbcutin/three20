@@ -17,6 +17,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@class TTNavigator;
+
 @interface TTStyledNode : NSObject {
   TTStyledNode* _nextSibling;
   TTStyledNode* _parentNode;
@@ -101,10 +103,12 @@
 @interface TTStyledLinkNode : TTStyledInline {
   NSString* _URL;
   BOOL _highlighted;
+  TTNavigator* _navigator;
 }
 
-@property (nonatomic) BOOL highlighted;
-@property (nonatomic, retain) NSString* URL;
+@property(nonatomic) BOOL highlighted;
+@property(nonatomic,retain) NSString* URL;
+@property(nonatomic,retain) TTNavigator* navigator;
 
 - (id)initWithURL:(NSString*)URL;
 - (id)initWithURL:(NSString*)URL next:(TTStyledNode*)nextSibling;

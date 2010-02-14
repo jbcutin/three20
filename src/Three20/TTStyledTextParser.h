@@ -18,6 +18,7 @@
 #import <UIKit/UIKit.h>
 
 @class TTStyledNode, TTStyledElement;
+@class TTNavigator;
 
 @interface TTStyledTextParser : NSObject {
   TTStyledNode* _rootNode;
@@ -28,11 +29,14 @@
   NSMutableArray* _stack;
   BOOL _parseLineBreaks;
   BOOL _parseURLs;
+  TTNavigator* _navigator;
 }
 
 @property (nonatomic, retain) TTStyledNode* rootNode;
 @property (nonatomic) BOOL parseLineBreaks;
 @property (nonatomic) BOOL parseURLs;
+
+- (id)initWithNavigator:(TTNavigator*)navigator;
 
 - (void)parseXHTML:(NSString*)html;
 - (void)parseText:(NSString*)string;

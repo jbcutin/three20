@@ -48,7 +48,8 @@
 /**
  * A shortcut for setting the text property to an HTML string.
  */
-@property (nonatomic, copy) NSString* html;
+- (NSString*)html;
+- (void)setHtml:(NSString*)html withNavigator:(TTNavigator*)navigator;
 
 /**
  * The font of the text.

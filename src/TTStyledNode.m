@@ -345,6 +345,7 @@
 @implementation TTStyledLinkNode
 
 @synthesize URL = _URL, highlighted = _highlighted;
+@synthesize navigator = _navigator;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // NSObject
@@ -381,6 +382,7 @@
 
 - (void)dealloc {
   TT_RELEASE_SAFELY(_URL);
+  TT_RELEASE_SAFELY(_navigator);
   [super dealloc];
 }
 
@@ -393,7 +395,10 @@
 
 - (void)performDefaultAction {
   if (_URL) {
-    TTOpenURL(_URL);
+    TTDASSERT(nil != _navigator);
+    [_navigator openURLAction:
+     [[TTURLAction actionWithURLPath:_URL]
+      applyAnimated:YES]];
   }
 }
 

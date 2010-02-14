@@ -20,6 +20,7 @@
 
 @protocol TTStyledTextDelegate;
 @class TTStyledNode, TTStyledFrame, TTStyledBoxFrame;
+@class TTNavigator;
 
 @interface TTStyledText : NSObject <TTURLRequestDelegate> {
   id<TTStyledTextDelegate> _delegate;
@@ -30,6 +31,7 @@
   CGFloat _height;
   NSMutableArray* _invalidImages;
   NSMutableArray* _imageRequests;
+  TTNavigator* _navigator;
 }
 
 @property (nonatomic, assign) id<TTStyledTextDelegate> delegate;
@@ -78,8 +80,8 @@
  * be a well-formed XHTML fragment.  You do not need to enclose the source in an tag --
  * it can be any string with XHTML tags throughout.
  */
-+ (TTStyledText*)textFromXHTML:(NSString*)source;
-+ (TTStyledText*)textFromXHTML:(NSString*)source lineBreaks:(BOOL)lineBreaks URLs:(BOOL)URLs;
++ (TTStyledText*)textFromXHTML:(NSString*)source withNavigator:(TTNavigator*)navigator;
++ (TTStyledText*)textFromXHTML:(NSString*)source lineBreaks:(BOOL)lineBreaks URLs:(BOOL)URLs navigator:(TTNavigator*)navigator;
 
 /**
  * Constructs styled text with all URLs transformed into links.

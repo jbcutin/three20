@@ -428,8 +428,8 @@ static const CGFloat kCancelHighlightThreshold = 4;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-- (void)setHtml:(NSString*)html {
-  self.text = [TTStyledText textFromXHTML:html];
+- (void)setHtml:(NSString*)html withNavigator:(TTNavigator*)navigator {
+  self.text = [TTStyledText textFromXHTML:html withNavigator:navigator];
 }
 
 
