@@ -85,7 +85,7 @@ static const CGFloat kDefaultMessageImageHeight = 34;
     TTTableLinkedItem* item = object;
     if (item.URL) {
       TTNavigator* navigator = nil;
-      
+
       BOOL isDifferentNavigator = NO;
 #ifdef __IPHONE_3_2
       if ([TTSplitNavigator isSplitNavigatorActive]) {

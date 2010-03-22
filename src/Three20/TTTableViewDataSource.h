@@ -18,12 +18,20 @@
 
 #import "Three20/TTModel.h"
 
+#ifdef __IPHONE_3_2
+@class TTNavigator;
+#endif
+
 @protocol TTTableViewDataSource <UITableViewDataSource, TTModel, UISearchDisplayDelegate>
 
 /**
  * Optional method to return a model object to delegate the TTModel protocol to.
  */
 @property (nonatomic, retain) id<TTModel> model;
+
+#ifdef __IPHONE_3_2
+@property(nonatomic,retain) TTNavigator* responsibleNavigator;
+#endif
 
 /**
  *
@@ -127,10 +135,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
  
-#ifdef __IPHONE_3_2
-@class TTNavigator;
-#endif
-
 @interface TTTableViewDataSource : NSObject <TTTableViewDataSource> {
   id<TTModel> _model;
 
@@ -138,10 +142,6 @@
   TTNavigator* _responsibleNavigator;
 #endif
 }
-
-#ifdef __IPHONE_3_2
-@property(nonatomic,retain) TTNavigator* responsibleNavigator;
-#endif
 
 @end
 

@@ -29,6 +29,7 @@
 #import "Three20/TTPopupViewController.h"
 #import "Three20/TTSearchDisplayController.h"
 #import "Three20/TTTableViewController.h"
+#import "Three20/TTTableViewDataSource.h"
 
 #import "Three20/TTSingleNavigatorWindow.h"
 #import "Three20/TTSplitNavigator.h"
@@ -254,7 +255,7 @@ UIViewController* TTOpenURL(NSString* URL) {
                  animated: (BOOL)animated
                transition: (NSInteger)transition {
   BOOL didPresentNewController = YES;
-  
+
   if (nil == _rootViewController) {
     [self setRootViewController:controller];
 
@@ -789,6 +790,13 @@ UIViewController* TTOpenURL(NSString* URL) {
     UIViewController* controller = object;
     controller.originalNavigatorURL = URL;
     controller.responsibleNavigator = self;
+    if ([object isKindOfClass:[TTTableViewController class]]) {
+      TTTableViewController* tableViewController = (TTTableViewController*)controller;
+      if ([tableViewController.dataSource isKindOfClass:[TTTableViewDataSource class]]) {
+        TTTableViewDataSource* dataSource = (TTTableViewDataSource*)tableViewController.dataSource;
+        dataSource.responsibleNavigator = self;
+      }
+    }
     if (_delayCount) {
       if (!_delayedControllers) {
         _delayedControllers = [[NSMutableArray alloc] initWithObjects:controller,nil];
@@ -897,7 +905,7 @@ UIViewController* TTOpenURL(NSString* URL) {
  */
 - (UIViewController*)restoreViewControllers {
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  
+
   NSString* keyPrefix = TTIsStringWithAnyText(_uniquePrefix)
                         ? _uniquePrefix : kNavigatorDefaultKeyPrefix;
   NSString* historyKey = [keyPrefix
