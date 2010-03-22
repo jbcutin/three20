@@ -1,0 +1,522 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
+		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
+		6E3175D71126573F00F4DDEC /* libThree20.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E3175D41126573400F4DDEC /* libThree20.a */; };
+		6E3175FB1126577100F4DDEC /* Three20.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6E3175FA1126577100F4DDEC /* Three20.bundle */; };
+		6E3176191126579100F4DDEC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E3176181126579100F4DDEC /* QuartzCore.framework */; };
+		6E429DCD11582BD000F0ABEB /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E429DCC11582BD000F0ABEB /* MessageUI.framework */; };
+		6E7333881126B1F3005CA078 /* QuickMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7333871126B1F3005CA078 /* QuickMenuViewController.m */; };
+		6E73338B1126B201005CA078 /* Atlas.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E73338A1126B201005CA078 /* Atlas.m */; };
+		6E7333CF1126B3D7005CA078 /* MockPhotoSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7333CE1126B3D7005CA078 /* MockPhotoSource.m */; };
+		6E7333D71126B415005CA078 /* PhotoBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E7333D61126B415005CA078 /* PhotoBrowserViewController.m */; };
+		6E733A041127583A005CA078 /* PhotoThumbnailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E733A031127583A005CA078 /* PhotoThumbnailsViewController.m */; };
+		6E733A4A11275A9F005CA078 /* StyledViewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E733A4911275A9F005CA078 /* StyledViewsViewController.m */; };
+		6E733AFD11276E49005CA078 /* defaultMusic.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E733AF611276E49005CA078 /* defaultMusic.png */; };
+		6E733AFE11276E49005CA078 /* defaultPerson.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E733AF711276E49005CA078 /* defaultPerson.png */; };
+		6E733AFF11276E49005CA078 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E733AF811276E49005CA078 /* Icon.png */; };
+		6E733B0011276E49005CA078 /* mask.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E733AF911276E49005CA078 /* mask.png */; };
+		6E733B0111276E49005CA078 /* person.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6E733AFA11276E49005CA078 /* person.jpg */; };
+		6E733B0211276E49005CA078 /* smiley.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E733AFB11276E49005CA078 /* smiley.png */; };
+		6E733B0311276E49005CA078 /* tableIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E733AFC11276E49005CA078 /* tableIcon.png */; };
+		6E733B0B11279818005CA078 /* StyledLabelsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E733B0A11279818005CA078 /* StyledLabelsViewController.m */; };
+		6E733B0F11279832005CA078 /* StyledLabelsStyleSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E733B0E11279832005CA078 /* StyledLabelsStyleSheet.m */; };
+		6E733BD41127B5BE005CA078 /* ButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E733BD31127B5BE005CA078 /* ButtonsViewController.m */; };
+		6E733BD81127B5F1005CA078 /* ButtonsStyleSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E733BD71127B5F1005CA078 /* ButtonsStyleSheet.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6E3175D31126573400F4DDEC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6E3175CE1126573400F4DDEC /* Three20.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BEF31F3A0F352DF5000DE5D2;
+			remoteInfo = Three20;
+		};
+		6E3175D51126573400F4DDEC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6E3175CE1126573400F4DDEC /* Three20.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EB9E6C6210B6A8F800DE563C;
+			remoteInfo = UnitTests;
+		};
+		6E3175F51126575600F4DDEC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6E3175CE1126573400F4DDEC /* Three20.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BEF31F390F352DF5000DE5D2;
+			remoteInfo = Three20;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1D3623240D0F684500981E51 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		1D3623250D0F684500981E51 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		1D6058910D05DD3D006BFB54 /* TTCatalogPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TTCatalogPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		28A0AAE50D9B0CCF005BE974 /* TTCatalogPad_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTCatalogPad_Prefix.pch; sourceTree = "<group>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6E3175CE1126573400F4DDEC /* Three20.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Three20.xcodeproj; path = ../../src/Three20.xcodeproj; sourceTree = SOURCE_ROOT; };
+		6E3175FA1126577100F4DDEC /* Three20.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Three20.bundle; path = ../../src/Three20.bundle; sourceTree = SOURCE_ROOT; };
+		6E3176181126579100F4DDEC /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		6E429DCC11582BD000F0ABEB /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		6E7333861126B1F3005CA078 /* QuickMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickMenuViewController.h; sourceTree = "<group>"; };
+		6E7333871126B1F3005CA078 /* QuickMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickMenuViewController.m; sourceTree = "<group>"; };
+		6E7333891126B201005CA078 /* Atlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Atlas.h; sourceTree = "<group>"; };
+		6E73338A1126B201005CA078 /* Atlas.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Atlas.m; sourceTree = "<group>"; };
+		6E7333CD1126B3D7005CA078 /* MockPhotoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockPhotoSource.h; sourceTree = "<group>"; };
+		6E7333CE1126B3D7005CA078 /* MockPhotoSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockPhotoSource.m; sourceTree = "<group>"; };
+		6E7333D51126B415005CA078 /* PhotoBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoBrowserViewController.h; sourceTree = "<group>"; };
+		6E7333D61126B415005CA078 /* PhotoBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoBrowserViewController.m; sourceTree = "<group>"; };
+		6E733A021127583A005CA078 /* PhotoThumbnailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoThumbnailsViewController.h; sourceTree = "<group>"; };
+		6E733A031127583A005CA078 /* PhotoThumbnailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoThumbnailsViewController.m; sourceTree = "<group>"; };
+		6E733A4811275A9F005CA078 /* StyledViewsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyledViewsViewController.h; sourceTree = "<group>"; };
+		6E733A4911275A9F005CA078 /* StyledViewsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StyledViewsViewController.m; sourceTree = "<group>"; };
+		6E733AF611276E49005CA078 /* defaultMusic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = defaultMusic.png; path = Resources/defaultMusic.png; sourceTree = "<group>"; };
+		6E733AF711276E49005CA078 /* defaultPerson.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = defaultPerson.png; path = Resources/defaultPerson.png; sourceTree = "<group>"; };
+		6E733AF811276E49005CA078 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
+		6E733AF911276E49005CA078 /* mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mask.png; path = Resources/mask.png; sourceTree = "<group>"; };
+		6E733AFA11276E49005CA078 /* person.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = person.jpg; path = Resources/person.jpg; sourceTree = "<group>"; };
+		6E733AFB11276E49005CA078 /* smiley.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = smiley.png; path = Resources/smiley.png; sourceTree = "<group>"; };
+		6E733AFC11276E49005CA078 /* tableIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tableIcon.png; path = Resources/tableIcon.png; sourceTree = "<group>"; };
+		6E733B0911279818005CA078 /* StyledLabelsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyledLabelsViewController.h; sourceTree = "<group>"; };
+		6E733B0A11279818005CA078 /* StyledLabelsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StyledLabelsViewController.m; sourceTree = "<group>"; };
+		6E733B0D11279832005CA078 /* StyledLabelsStyleSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyledLabelsStyleSheet.h; sourceTree = "<group>"; };
+		6E733B0E11279832005CA078 /* StyledLabelsStyleSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StyledLabelsStyleSheet.m; sourceTree = "<group>"; };
+		6E733BD21127B5BE005CA078 /* ButtonsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonsViewController.h; sourceTree = "<group>"; };
+		6E733BD31127B5BE005CA078 /* ButtonsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonsViewController.m; sourceTree = "<group>"; };
+		6E733BD61127B5F1005CA078 /* ButtonsStyleSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonsStyleSheet.h; sourceTree = "<group>"; };
+		6E733BD71127B5F1005CA078 /* ButtonsStyleSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonsStyleSheet.m; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* TTCatalogPad-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TTCatalogPad-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1D60588F0D05DD3D006BFB54 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
+				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
+				2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */,
+				6E3175D71126573F00F4DDEC /* libThree20.a in Frameworks */,
+				6E3176191126579100F4DDEC /* QuartzCore.framework in Frameworks */,
+				6E429DCD11582BD000F0ABEB /* MessageUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				6E7333851126B1DC005CA078 /* Quick Menu */,
+				6E7333CB1126B3C5005CA078 /* Examples */,
+				6E7333891126B201005CA078 /* Atlas.h */,
+				6E73338A1126B201005CA078 /* Atlas.m */,
+				1D3623240D0F684500981E51 /* AppDelegate.h */,
+				1D3623250D0F684500981E51 /* AppDelegate.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1D6058910D05DD3D006BFB54 /* TTCatalogPad.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources-iPad */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+				6E429DCC11582BD000F0ABEB /* MessageUI.framework */,
+			);
+			name = CustomTemplate;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				28A0AAE50D9B0CCF005BE974 /* TTCatalogPad_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources-iPad */ = {
+			isa = PBXGroup;
+			children = (
+				6E733AF611276E49005CA078 /* defaultMusic.png */,
+				6E733AF711276E49005CA078 /* defaultPerson.png */,
+				6E733AF811276E49005CA078 /* Icon.png */,
+				6E733AF911276E49005CA078 /* mask.png */,
+				6E733AFA11276E49005CA078 /* person.jpg */,
+				6E733AFB11276E49005CA078 /* smiley.png */,
+				6E733AFC11276E49005CA078 /* tableIcon.png */,
+				6E3175FA1126577100F4DDEC /* Three20.bundle */,
+				8D1107310486CEB800E47090 /* TTCatalogPad-Info.plist */,
+			);
+			name = "Resources-iPad";
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6E3175CE1126573400F4DDEC /* Three20.xcodeproj */,
+				6E3176181126579100F4DDEC /* QuartzCore.framework */,
+				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
+				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6E3175CF1126573400F4DDEC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6E3175D41126573400F4DDEC /* libThree20.a */,
+				6E3175D61126573400F4DDEC /* UnitTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6E7333851126B1DC005CA078 /* Quick Menu */ = {
+			isa = PBXGroup;
+			children = (
+				6E7333861126B1F3005CA078 /* QuickMenuViewController.h */,
+				6E7333871126B1F3005CA078 /* QuickMenuViewController.m */,
+			);
+			name = "Quick Menu";
+			sourceTree = "<group>";
+		};
+		6E7333CB1126B3C5005CA078 /* Examples */ = {
+			isa = PBXGroup;
+			children = (
+				6E7333CC1126B3CC005CA078 /* Photos */,
+				6E733A4511275A3F005CA078 /* Styles */,
+				6E733BCC1127B5A4005CA078 /* Controls */,
+			);
+			name = Examples;
+			sourceTree = "<group>";
+		};
+		6E7333CC1126B3CC005CA078 /* Photos */ = {
+			isa = PBXGroup;
+			children = (
+				6E7333CD1126B3D7005CA078 /* MockPhotoSource.h */,
+				6E7333CE1126B3D7005CA078 /* MockPhotoSource.m */,
+				6E7333D41126B3FA005CA078 /* Photo Browser */,
+				6E733A0111275825005CA078 /* Photo Thumbnails */,
+			);
+			name = Photos;
+			sourceTree = "<group>";
+		};
+		6E7333D41126B3FA005CA078 /* Photo Browser */ = {
+			isa = PBXGroup;
+			children = (
+				6E7333D51126B415005CA078 /* PhotoBrowserViewController.h */,
+				6E7333D61126B415005CA078 /* PhotoBrowserViewController.m */,
+			);
+			name = "Photo Browser";
+			sourceTree = "<group>";
+		};
+		6E733A0111275825005CA078 /* Photo Thumbnails */ = {
+			isa = PBXGroup;
+			children = (
+				6E733A021127583A005CA078 /* PhotoThumbnailsViewController.h */,
+				6E733A031127583A005CA078 /* PhotoThumbnailsViewController.m */,
+			);
+			name = "Photo Thumbnails";
+			sourceTree = "<group>";
+		};
+		6E733A4511275A3F005CA078 /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				6E733A4611275A92005CA078 /* Styled Views */,
+				6E733B0811279809005CA078 /* Styled Labels */,
+			);
+			name = Styles;
+			sourceTree = "<group>";
+		};
+		6E733A4611275A92005CA078 /* Styled Views */ = {
+			isa = PBXGroup;
+			children = (
+				6E733A4811275A9F005CA078 /* StyledViewsViewController.h */,
+				6E733A4911275A9F005CA078 /* StyledViewsViewController.m */,
+			);
+			name = "Styled Views";
+			sourceTree = "<group>";
+		};
+		6E733B0811279809005CA078 /* Styled Labels */ = {
+			isa = PBXGroup;
+			children = (
+				6E733B0C11279827005CA078 /* Stylesheet */,
+				6E733B0911279818005CA078 /* StyledLabelsViewController.h */,
+				6E733B0A11279818005CA078 /* StyledLabelsViewController.m */,
+			);
+			name = "Styled Labels";
+			sourceTree = "<group>";
+		};
+		6E733B0C11279827005CA078 /* Stylesheet */ = {
+			isa = PBXGroup;
+			children = (
+				6E733B0D11279832005CA078 /* StyledLabelsStyleSheet.h */,
+				6E733B0E11279832005CA078 /* StyledLabelsStyleSheet.m */,
+			);
+			name = Stylesheet;
+			sourceTree = "<group>";
+		};
+		6E733BCC1127B5A4005CA078 /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				6E733BD01127B5AB005CA078 /* Buttons */,
+			);
+			name = Controls;
+			sourceTree = "<group>";
+		};
+		6E733BD01127B5AB005CA078 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				6E733BD51127B5E3005CA078 /* Stylesheet */,
+				6E733BD21127B5BE005CA078 /* ButtonsViewController.h */,
+				6E733BD31127B5BE005CA078 /* ButtonsViewController.m */,
+			);
+			name = Buttons;
+			sourceTree = "<group>";
+		};
+		6E733BD51127B5E3005CA078 /* Stylesheet */ = {
+			isa = PBXGroup;
+			children = (
+				6E733BD61127B5F1005CA078 /* ButtonsStyleSheet.h */,
+				6E733BD71127B5F1005CA078 /* ButtonsStyleSheet.m */,
+			);
+			name = Stylesheet;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1D6058900D05DD3D006BFB54 /* TTCatalogPad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "TTCatalogPad" */;
+			buildPhases = (
+				1D60588D0D05DD3D006BFB54 /* Resources */,
+				1D60588E0D05DD3D006BFB54 /* Sources */,
+				1D60588F0D05DD3D006BFB54 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6E3175F61126575600F4DDEC /* PBXTargetDependency */,
+			);
+			name = TTCatalogPad;
+			productName = TTCatalogPad;
+			productReference = 1D6058910D05DD3D006BFB54 /* TTCatalogPad.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "TTCatalogPad" */;
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				en,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 6E3175CF1126573400F4DDEC /* Products */;
+					ProjectRef = 6E3175CE1126573400F4DDEC /* Three20.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				1D6058900D05DD3D006BFB54 /* TTCatalogPad */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		6E3175D41126573400F4DDEC /* libThree20.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libThree20.a;
+			remoteRef = 6E3175D31126573400F4DDEC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6E3175D61126573400F4DDEC /* UnitTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = UnitTests.octest;
+			remoteRef = 6E3175D51126573400F4DDEC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1D60588D0D05DD3D006BFB54 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E3175FB1126577100F4DDEC /* Three20.bundle in Resources */,
+				6E733AFD11276E49005CA078 /* defaultMusic.png in Resources */,
+				6E733AFE11276E49005CA078 /* defaultPerson.png in Resources */,
+				6E733AFF11276E49005CA078 /* Icon.png in Resources */,
+				6E733B0011276E49005CA078 /* mask.png in Resources */,
+				6E733B0111276E49005CA078 /* person.jpg in Resources */,
+				6E733B0211276E49005CA078 /* smiley.png in Resources */,
+				6E733B0311276E49005CA078 /* tableIcon.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1D60588E0D05DD3D006BFB54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
+				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
+				6E7333881126B1F3005CA078 /* QuickMenuViewController.m in Sources */,
+				6E73338B1126B201005CA078 /* Atlas.m in Sources */,
+				6E7333CF1126B3D7005CA078 /* MockPhotoSource.m in Sources */,
+				6E7333D71126B415005CA078 /* PhotoBrowserViewController.m in Sources */,
+				6E733A041127583A005CA078 /* PhotoThumbnailsViewController.m in Sources */,
+				6E733A4A11275A9F005CA078 /* StyledViewsViewController.m in Sources */,
+				6E733B0B11279818005CA078 /* StyledLabelsViewController.m in Sources */,
+				6E733B0F11279832005CA078 /* StyledLabelsStyleSheet.m in Sources */,
+				6E733BD41127B5BE005CA078 /* ButtonsViewController.m in Sources */,
+				6E733BD81127B5F1005CA078 /* ButtonsStyleSheet.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6E3175F61126575600F4DDEC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Three20;
+			targetProxy = 6E3175F51126575600F4DDEC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1D6058940D05DD3E006BFB54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = TTCatalogPad_Prefix.pch;
+				HEADER_SEARCH_PATHS = ../../src;
+				INFOPLIST_FILE = "TTCatalogPad-Info.plist";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PRODUCT_NAME = TTCatalogPad;
+			};
+			name = Debug;
+		};
+		1D6058950D05DD3E006BFB54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = TTCatalogPad_Prefix.pch;
+				HEADER_SEARCH_PATHS = ../../src;
+				INFOPLIST_FILE = "TTCatalogPad-Info.plist";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PRODUCT_NAME = TTCatalogPad;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PREBINDING = NO;
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "TTCatalogPad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D6058940D05DD3E006BFB54 /* Debug */,
+				1D6058950D05DD3E006BFB54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "TTCatalogPad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
