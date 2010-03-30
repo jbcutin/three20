@@ -120,7 +120,9 @@ static TTSplitNavigator* gSplitNavigator = nil;
   UIViewController* viewController = rightSideNavigator.rootViewController;
   if ([viewController isKindOfClass:[UINavigationController class]]) {
     UINavigationController* navController = (UINavigationController*)viewController;
-    [navController.navigationBar.topItem setLeftBarButtonItem:barButtonItem animated:YES];
+    if ([navController.viewControllers count] == 1) {
+      [navController.navigationBar.topItem setLeftBarButtonItem:barButtonItem animated:YES];
+    }
 
   } else {
     // Not implemented
