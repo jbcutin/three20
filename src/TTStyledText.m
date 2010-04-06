@@ -38,6 +38,23 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // class public
 
++ (TTStyledText*)textFromXHTML:(NSString*)source {
+  return [self textFromXHTML:source lineBreaks:NO URLs:YES];
+}
+
++ (TTStyledText*)textFromXHTML:(NSString*)source lineBreaks:(BOOL)lineBreaks URLs:(BOOL)URLs {
+  TTStyledTextParser* parser = [[[TTStyledTextParser alloc] init] autorelease];
+  parser.parseLineBreaks = lineBreaks;
+  parser.parseURLs = URLs;
+  [parser parseXHTML:source];
+  if (parser.rootNode) {
+    return [[[TTStyledText alloc] initWithNode:parser.rootNode] autorelease];
+  } else {
+    return nil;
+  }
+}
+
+#ifdef __IPHONE_3_2
 + (TTStyledText*)textFromXHTML:(NSString*)source withNavigator:(TTNavigator*)navigator {
   return [self textFromXHTML:source lineBreaks:NO URLs:YES navigator:navigator];
 }
@@ -53,6 +70,7 @@
     return nil;
   }
 }
+#endif
 
 + (TTStyledText*)textWithURLs:(NSString*)source {
   return [self textWithURLs:source lineBreaks:NO];
@@ -81,7 +99,7 @@
     if (!_invalidImages) {
       _invalidImages = [[NSMutableArray alloc] init];
     }
-    
+
     for (TTURLRequest* request in requests) {
       [_invalidImages addObject:request.userInfo];
       [request cancel];
@@ -111,7 +129,7 @@
     }
 
     TT_RELEASE_SAFELY(_invalidImages);
-    
+
     if (loadedSome) {
       [_delegate styledTextNeedsDisplay:self];
     }
@@ -196,9 +214,9 @@
   TTURLImageResponse* response = request.response;
   TTStyledImageNode* imageNode = request.userInfo;
   imageNode.image = response.image;
-  
+
   [_imageRequests removeObject:request];
-  
+
   [_delegate styledTextNeedsDisplay:self];
 }
 
@@ -254,14 +272,14 @@
   layout.width = _width;
   layout.font = _font;
   [layout layout:_rootNode];
-  
+
   [_rootFrame release];
   _rootFrame = [layout.rootFrame retain];
   _height = ceil(layout.height);
   [_invalidImages release];
   _invalidImages = [layout.invalidImages retain];
   [layout release];
-  
+
   [self loadImages];
 }
 

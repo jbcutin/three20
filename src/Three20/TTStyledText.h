@@ -80,8 +80,12 @@
  * be a well-formed XHTML fragment.  You do not need to enclose the source in an tag --
  * it can be any string with XHTML tags throughout.
  */
++ (TTStyledText*)textFromXHTML:(NSString*)source;
++ (TTStyledText*)textFromXHTML:(NSString*)source lineBreaks:(BOOL)lineBreaks URLs:(BOOL)URLs;
+#ifdef __IPHONE_3_2
 + (TTStyledText*)textFromXHTML:(NSString*)source withNavigator:(TTNavigator*)navigator;
 + (TTStyledText*)textFromXHTML:(NSString*)source lineBreaks:(BOOL)lineBreaks URLs:(BOOL)URLs navigator:(TTNavigator*)navigator;
+#endif
 
 /**
  * Constructs styled text with all URLs transformed into links.

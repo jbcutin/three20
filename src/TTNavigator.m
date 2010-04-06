@@ -157,11 +157,18 @@ UIViewController* TTOpenURL(NSString* URL) {
     [_rootViewController release];
     _rootViewController = [controller retain];
 
+#ifdef __IPHONE_3_2
     if ([self.window isKindOfClass:[TTNavigatorWindow class]]) {
       [(TTNavigatorWindow*)self.window setController:_rootViewController forNavigator:self];
+
     } else {
+#endif
+
       [self.window addSubview:_rootViewController.view];
+
+#ifdef __IPHONE_3_2
     }
+#endif
   }
 }
 
@@ -790,6 +797,7 @@ UIViewController* TTOpenURL(NSString* URL) {
     UIViewController* controller = object;
     controller.originalNavigatorURL = URL;
     controller.responsibleNavigator = self;
+#ifdef __IPHONE_3_2
     if ([object isKindOfClass:[TTTableViewController class]]) {
       TTTableViewController* tableViewController = (TTTableViewController*)controller;
       if ([tableViewController.dataSource isKindOfClass:[TTTableViewDataSource class]]) {
@@ -797,6 +805,7 @@ UIViewController* TTOpenURL(NSString* URL) {
         dataSource.responsibleNavigator = self;
       }
     }
+#endif
     if (_delayCount) {
       if (!_delayedControllers) {
         _delayedControllers = [[NSMutableArray alloc] initWithObjects:controller,nil];

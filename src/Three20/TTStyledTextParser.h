@@ -36,7 +36,9 @@
 @property (nonatomic) BOOL parseLineBreaks;
 @property (nonatomic) BOOL parseURLs;
 
+#ifdef __IPHONE_3_2
 - (id)initWithNavigator:(TTNavigator*)navigator;
+#endif
 
 - (void)parseXHTML:(NSString*)html;
 - (void)parseText:(NSString*)string;

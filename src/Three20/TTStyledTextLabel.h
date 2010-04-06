@@ -49,7 +49,10 @@
  * A shortcut for setting the text property to an HTML string.
  */
 - (NSString*)html;
+- (void)setHtml:(NSString*)html;
+#ifdef __IPHONE_3_2
 - (void)setHtml:(NSString*)html withNavigator:(TTNavigator*)navigator;
+#endif
 
 /**
  * The font of the text.

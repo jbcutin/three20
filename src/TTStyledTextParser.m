@@ -64,7 +64,7 @@
   if (_chars.length) {
     [self parseText:_chars];
   }
-  
+
   TT_RELEASE_SAFELY(_chars);
 }
 
@@ -117,12 +117,14 @@
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
+#ifdef __IPHONE_3_2
 - (id)initWithNavigator:(TTNavigator*)navigator {
   if (self = [self init]) {
     _navigator = [navigator retain];
   }
   return self;
 }
+#endif
 
 
 - (id)init {
@@ -197,7 +199,7 @@
     [self pushNode:node];
   }
 }
- 
+
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
   if (!_chars) {
     _chars = [string mutableCopy];
@@ -250,7 +252,7 @@
         NSRange textRange = NSMakeRange(index, range.location - index);
         NSString* substr = [string substringWithRange:textRange];
         [self parseURLs:substr];
-        
+
         // Add a line break node after the text
         TTStyledLineBreakNode* br = [[[TTStyledLineBreakNode alloc] init] autorelease];
         [self addNode:br];

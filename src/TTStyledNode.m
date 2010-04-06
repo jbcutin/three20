@@ -18,6 +18,7 @@
 
 #import "Three20/TTGlobalCore.h"
 
+#import "Three20/TTURLAction.h"
 #import "Three20/TTURLCache.h"
 #import "Three20/TTNavigator.h"
 

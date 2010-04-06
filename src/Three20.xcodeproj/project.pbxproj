@@ -19,8 +19,6 @@
 		6E14D98E10E0BC4E00445222 /* TTXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14D8EC10E0B60000445222 /* TTXMLParser.m */; };
 		6E14D99A10E0BC8000445222 /* TTXMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14D99910E0BC8000445222 /* TTXMLParser.h */; };
 		6E14DAD810E0DC7D00445222 /* TTURLXMLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14DAD710E0DC7D00445222 /* TTURLXMLResponse.h */; };
-		6E311D2B116BC2B60045C0DF /* TTNavigatorWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E311D29116BC2B60045C0DF /* TTNavigatorWindow.m */; };
-		6E311D2D116BC2CF0045C0DF /* TTNavigatorWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E311D2C116BC2CF0045C0DF /* TTNavigatorWindow.h */; };
 		6E311D3B116BC4330045C0DF /* TTURLObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E311D3A116BC4330045C0DF /* TTURLObject.h */; };
 		6E311D5D116BC5B30045C0DF /* TTURLPatternInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E311D5B116BC5B30045C0DF /* TTURLPatternInternal.m */; };
 		6E311D65116BC6370045C0DF /* TTURLPatternInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E311D64116BC6370045C0DF /* TTURLPatternInternal.h */; };
@@ -332,8 +330,6 @@
 		6E14D95710E0B9CB00445222 /* testcase.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = testcase.xml; path = tests/testcase.xml; sourceTree = "<group>"; };
 		6E14D99910E0BC8000445222 /* TTXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTXMLParser.h; path = Three20/TTXMLParser.h; sourceTree = "<group>"; };
 		6E14DAD710E0DC7D00445222 /* TTURLXMLResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTURLXMLResponse.h; path = Three20/TTURLXMLResponse.h; sourceTree = "<group>"; };
-		6E311D29116BC2B60045C0DF /* TTNavigatorWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTNavigatorWindow.m; sourceTree = "<group>"; };
-		6E311D2C116BC2CF0045C0DF /* TTNavigatorWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTNavigatorWindow.h; path = Three20/TTNavigatorWindow.h; sourceTree = "<group>"; };
 		6E311D3A116BC4330045C0DF /* TTURLObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTURLObject.h; path = Three20/TTURLObject.h; sourceTree = "<group>"; };
 		6E311D5B116BC5B30045C0DF /* TTURLPatternInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTURLPatternInternal.m; sourceTree = "<group>"; };
 		6E311D64116BC6370045C0DF /* TTURLPatternInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TTURLPatternInternal.h; path = Three20/TTURLPatternInternal.h; sourceTree = "<group>"; };
@@ -1464,7 +1460,6 @@
 				6E14DAD810E0DC7D00445222 /* TTURLXMLResponse.h in Headers */,
 				6EEFB6C71162717F009B479E /* TTURLRequestModel.h in Headers */,
 				6EEFB6DE11627305009B479E /* TTModelDelegate.h in Headers */,
-				6E311D2D116BC2CF0045C0DF /* TTNavigatorWindow.h in Headers */,
 				6E311D3B116BC4330045C0DF /* TTURLObject.h in Headers */,
 				6E311D65116BC6370045C0DF /* TTURLPatternInternal.h in Headers */,
 				6E94C7C3116DA0CF0012B12C /* TTMessageControllerDelegate.h in Headers */,
@@ -1696,7 +1691,6 @@
 				6E14D8B210E0A8D200445222 /* TTURLXMLResponse.m in Sources */,
 				6E14D8EE10E0B60000445222 /* TTXMLParser.m in Sources */,
 				6EEFB6C911627188009B479E /* TTURLRequestModel.m in Sources */,
-				6E311D2B116BC2B60045C0DF /* TTNavigatorWindow.m in Sources */,
 				6E311D5D116BC5B30045C0DF /* TTURLPatternInternal.m in Sources */,
 				6E94C7D8116DA1810012B12C /* TTMessageField.m in Sources */,
 				6E94C80A116DA3790012B12C /* TTMessageRecipientField.m in Sources */,
