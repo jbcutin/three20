@@ -279,7 +279,7 @@ static NSMutableDictionary* gPopupViewControllers = nil;
 #ifdef __IPHONE_3_2
   // For now, we don't hide the status bar in split views.
   if (![TTSplitNavigator isSplitNavigatorActive]) {
-    [[UIApplication sharedApplication] setStatusBarHidden:!show animated:animated];
+    [[UIApplication sharedApplication] setStatusBarHidden:!show withAnimation:(animated?UIStatusBarAnimationSlide:UIStatusBarAnimationNone)];
   }
 #else
   [[UIApplication sharedApplication] setStatusBarHidden:!show animated:animated];

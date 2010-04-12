@@ -129,7 +129,11 @@ static const CGFloat kMarginY = 6;
   _originalStatusBarStyle = app.statusBarStyle;
   _originalStatusBarHidden = app.statusBarHidden;
   if (!_originalStatusBarHidden) {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 30200
+    [app setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+#else
     [app setStatusBarHidden:NO animated:YES];
+#endif
     [app setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
   }
   [_textView becomeFirstResponder];
@@ -139,7 +143,11 @@ static const CGFloat kMarginY = 6;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)hideKeyboard {
   UIApplication* app = [UIApplication sharedApplication];
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 30200
+  [app setStatusBarHidden:_originalStatusBarHidden withAnimation:UIStatusBarAnimationSlide];
+#else
   [app setStatusBarHidden:_originalStatusBarHidden animated:YES];
+#endif
   [app setStatusBarStyle:_originalStatusBarStyle animated:NO];
   [_textView resignFirstResponder];
 }
