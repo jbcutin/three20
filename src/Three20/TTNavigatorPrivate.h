@@ -17,19 +17,15 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@class TTNavigator;
+#import "Three20/TTNavigator.h"
 
-/**
- * An internal implementation of the UIWindow object that provides a custom addSubview method.
- */
-@interface TTNavigatorWindow : UIWindow {
-  UIViewController*  tt_rootViewController;
-}
+@interface TTNavigator ()
 
-/**
- * The controller that is at the root of the view controller hierarchy, always a split view
- * controller.
- */
-@property (nonatomic,retain,readonly) UIViewController* rootViewController;
+@property (nonatomic, assign) TTNavigator* parentNavigator;
+
+@property (nonatomic, retain) UIWindow* window;
+
+@property (nonatomic, retain) UIViewController* rootViewController;
 
 @end
+

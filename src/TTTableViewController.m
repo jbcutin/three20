@@ -748,4 +748,11 @@ static const CGFloat kBannerViewHeight = 22;
                     tableFrame.size.width, kBannerViewHeight);
 }
 
+- (void)setResponsibleNavigatorSideEffects:(TTNavigator*)navigator {
+  if ([self.dataSource isKindOfClass:[TTTableViewDataSource class]]) {
+    TTTableViewDataSource* dataSource = (TTTableViewDataSource*)self.dataSource;
+    dataSource.responsibleNavigator = navigator;
+  }
+}
+
 @end

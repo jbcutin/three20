@@ -17,6 +17,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@class TTNavigator;
+
 /**
  * The base class for table cells which are single-object based.
  *
@@ -29,9 +31,13 @@
  * Subclasses should implement the object getter and setter.  The base implementations do
  * nothing, allowing you to store the object yourself using the appropriate type.
  */
-@interface TTTableViewCell : UITableViewCell
+@interface TTTableViewCell : UITableViewCell {
+  TTNavigator* tt_responsibleNavigator;
+}
 
 @property (nonatomic, retain) id object;
+
+@property(nonatomic,retain) TTNavigator* responsibleNavigator;
 
 /**
  * Measure the height of the row with the object that will be assigned to the cell.

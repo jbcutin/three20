@@ -20,6 +20,7 @@
 
 @protocol TTStyledTextDelegate;
 @class TTStyledNode, TTStyledFrame, TTStyledBoxFrame;
+@class TTNavigator;
 
 @interface TTStyledText : NSObject <TTURLRequestDelegate> {
   id<TTStyledTextDelegate> _delegate;
@@ -79,7 +80,9 @@
  * it can be any string with XHTML tags throughout.
  */
 + (TTStyledText*)textFromXHTML:(NSString*)source;
++ (TTStyledText*)textFromXHTML:(NSString*)source withNavigator:(TTNavigator*)navigator;
 + (TTStyledText*)textFromXHTML:(NSString*)source lineBreaks:(BOOL)lineBreaks URLs:(BOOL)URLs;
++ (TTStyledText*)textFromXHTML:(NSString*)source lineBreaks:(BOOL)lineBreaks URLs:(BOOL)URLs navigator:(TTNavigator*)navigator;
 
 /**
  * Constructs styled text with all URLs transformed into links.

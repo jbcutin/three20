@@ -34,6 +34,8 @@ typedef enum {
 @interface TTNavigator : NSObject {
   id<TTNavigatorDelegate>     _delegate;
 
+  TTNavigator*                tt_parentNavigator;
+
   TTURLMap*                   _URLMap;
 
   UIWindow*                   _window;
@@ -48,7 +50,21 @@ typedef enum {
 
   BOOL                        _supportsShakeToReload;
   BOOL                        _opensExternalURLs;
+
+  NSString*                   tt_uniquePrefix;
 }
+
+/**
+ * Access the application's root navigator.
+ */
++ (TTNavigator*)navigator;
+
+/**
+ * Set the application's root navigator to one appropriate for the specified controller,
+ * and return it. If the root navigator is already of an appropriate type, this method
+ * will return the existing navigator.
+ */
++ (TTNavigator*)setSharedNavigatorWithRootControllerClass:(Class)rootControllerClass;
 
 @property (nonatomic, assign) id<TTNavigatorDelegate> delegate;
 
@@ -65,12 +81,12 @@ typedef enum {
  * By default retrieves the keyWindow. If there is no keyWindow, creates a new
  * TTNavigatorWindow.
  */
-@property (nonatomic, retain) UIWindow* window;
+@property (nonatomic, retain, readonly) UIWindow* window;
 
 /**
  * The controller that is at the root of the view controller hierarchy.
  */
-@property (nonatomic, readonly) UIViewController* rootViewController;
+@property (nonatomic, retain, readonly) UIViewController* rootViewController;
 
 /**
  * The currently visible view controller.
@@ -84,6 +100,17 @@ typedef enum {
  * display controllers which are visible, but not part of navigation.
  */
 @property (nonatomic, readonly) UIViewController* topViewController;
+
+/**
+ * The parent navigator of this TTNavigator, if any.
+ */
+@property (nonatomic, assign, readonly) TTNavigator* parentNavigator;
+
+/**
+ * The sub-navigators of this TTNavigator.
+ * The base implementation always returns nil.
+ */
+@property (nonatomic, readonly) NSArray* componentNavigators;
 
 /**
  * The URL of the currently visible view controller;
@@ -133,8 +160,13 @@ typedef enum {
  */
 @property (nonatomic, readonly) BOOL isDelayed;
 
+/**
+ * A unique prefix used when storing the navigation history in the user defaults.
+ *
+ * @default nil
+ */
+@property(nonatomic,copy) NSString* uniquePrefix;
 
-+ (TTNavigator*)navigator;
 
 /**
  * Load and display the view controller with a pattern that matches the URL.
@@ -186,6 +218,12 @@ typedef enum {
                      pattern:(TTURLPattern**)pattern;
 
 /**
+ * Retrieve the TTNavigator that has the given urlPath mapped in its TTURLMap.
+ * May be this navigator, or one of its sub-navigators.
+ */
+- (TTNavigator*)navigatorForURLPath:(NSString*)urlPath;
+
+/**
  * Tells the navigator to delay heavy operations.
  *
  * Initializing controllers can be very expensive, so if you are going to do some animation
@@ -215,6 +253,19 @@ typedef enum {
 - (UIViewController*)restoreViewControllers;
 
 /**
+ * Attempt to restore the view controller navigation history; if there is no history to
+ * restore, loads the specified URL instead.
+ */
+- (void)restoreViewControllersWithDefaultURL:(NSString*)url;
+
+/**
+ * Attempt to restore the view controller navigation history; if there is no history to
+ * restore, loads the specified URLs instead. The number of elements in the array corresponds
+ * to this value returned by -navigatorCount.
+ */
+- (void)restoreViewControllersWithDefaultURLs:(NSArray*)urls;
+
+/**
  * Persists a view controller's state and recursively persists the next view controller after it.
  *
  * Do not call this directly except from within a view controller that is being directed
@@ -226,6 +277,13 @@ typedef enum {
  * Removes all view controllers from the window and releases them.
  */
 - (void)removeAllViewControllers;
+
+/**
+ * Notification that a component navigator has displayed a new controller.
+ * The default implementation does nothing.
+ */
+- (void)componentNavigator:(TTNavigator*)navigator
+        didDisplayNewRootController:(UIViewController*)rootViewController;
 
 /**
  * Gets a navigation path which can be used to locate an object.

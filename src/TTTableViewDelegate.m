@@ -26,8 +26,10 @@
 #import "Three20/TTTableView.h"
 #import "Three20/TTStyledTextLabel.h"
 #import "Three20/TTNavigator.h"
+#import "Three20/TTURLAction.h"
 #import "Three20/TTDefaultStyleSheet.h"
 #import "Three20/TTURLRequestQueue.h"
+#import "Three20/UIViewControllerAdditions.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,7 +105,9 @@
   if ([object isKindOfClass:[TTTableLinkedItem class]]) {
     TTTableLinkedItem* item = object;
     if (item.URL && [_controller shouldOpenURL:item.URL]) {
-      TTOpenURL(item.URL);
+      TTNavigator* navigator = [[TTNavigator navigator] navigatorForURLPath:item.URL];
+      [navigator openURLAction: [[TTURLAction actionWithURLPath:item.URL]
+                                 applyAnimated:YES]];
     }
 
     if ([object isKindOfClass:[TTTableButton class]]) {

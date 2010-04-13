@@ -251,6 +251,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+    return YES;
+  }
+
   UIViewController* popup = [self popupViewController];
   if (popup) {
     return [popup shouldAutorotateToInterfaceOrientation:interfaceOrientation];

@@ -19,6 +19,8 @@
 
 #import "Three20/TTGlobalCore.h"
 
+@class TTNavigator;
+
 @interface UIViewController (TTCategory)
 
 /**
@@ -40,6 +42,15 @@
  * a different URL for your view controller to use when persisting and restoring it.
  */
 @property (nonatomic, copy) NSString* originalNavigatorURL;
+
+/**
+ * The TTNavigator that was used to load this controller.
+ *
+ * Do not ever change the value of this property.  TTNavigator will assign this
+ * when creating your view controller, and it expects it to remain constant throughout
+ * the view controller's life.
+ */
+@property(nonatomic,retain) TTNavigator* responsibleNavigator;
 
 /**
  * Determines whether a controller is primarily a container of other controllers.

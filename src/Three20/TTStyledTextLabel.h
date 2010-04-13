@@ -87,4 +87,6 @@
  */
 @property (nonatomic, retain) TTStyledElement* highlightedNode;
 
+- (void)setHtml:(NSString*)html withNavigator:(TTNavigator*)navigator;
+
 @end

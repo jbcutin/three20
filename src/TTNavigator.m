@@ -15,6 +15,7 @@
 //
 
 #import "Three20/TTNavigator.h"
+#import "Three20/TTNavigatorPrivate.h"
 
 #import "Three20/TTNavigatorWindow.h"
 
@@ -29,6 +30,16 @@
 #import "Three20/TTPopupViewController.h"
 #import "Three20/TTSearchDisplayController.h"
 #import "Three20/TTTableViewController.h"
+#import "Three20/TTTableViewDataSource.h"
+
+#import "Three20/TTSplitNavigator.h"
+
+static NSString *const kNavigatorDefaultKeyPrefix           = @"TTNavigator";
+static NSString *const kNavigatorHistoryKeySuffix           = @"History";
+static NSString *const kNavigatorHistoryTimeKeySuffix       = @"HistoryTime";
+static NSString *const kNavigatorHistoryImportantKeySuffix  = @"HistoryImportant";
+
+static TTNavigator* gNavigator = nil;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,20 +56,42 @@ UIViewController* TTOpenURL(NSString* URL) {
 @implementation TTNavigator
 
 @synthesize delegate                  = _delegate;
+@synthesize parentNavigator           = tt_parentNavigator;
 @synthesize URLMap                    = _URLMap;
 @synthesize window                    = _window;
 @synthesize rootViewController        = _rootViewController;
+@dynamic    componentNavigators;
 @synthesize persistenceExpirationAge  = _persistenceExpirationAge;
 @synthesize persistenceMode           = _persistenceMode;
 @synthesize supportsShakeToReload     = _supportsShakeToReload;
 @synthesize opensExternalURLs         = _opensExternalURLs;
+@synthesize uniquePrefix              = tt_uniquePrefix;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 + (TTNavigator*)navigator {
-  static TTNavigator* navigator = nil;
-  if (!navigator) {
-    navigator = [[TTNavigator alloc] init];
+  if (!gNavigator) {
+    [self setSharedNavigatorWithRootControllerClass:nil];
+  }
+  return gNavigator;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
++ (TTNavigator*)setSharedNavigatorWithRootControllerClass:(Class)rootControllerClass {
+  Class navigatorClass = [TTNavigator class];
+  TTNavigator* navigator = gNavigator;
+  
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 30200
+  if (rootControllerClass == [UISplitViewController class]) {
+    navigatorClass = [TTSplitNavigator class];
+  }
+#endif
+  
+  if (navigator == nil || navigatorClass != [navigator class]) {
+    navigator = [[navigatorClass alloc] init];
+    [gNavigator release];
+    gNavigator = navigator;
   }
   return navigator;
 }
@@ -105,15 +138,15 @@ UIViewController* TTOpenURL(NSString* URL) {
  * @private
  */
 - (UINavigationController*)frontNavigationController {
-  if ([_rootViewController isKindOfClass:[UITabBarController class]]) {
-    UITabBarController* tabBarController = (UITabBarController*)_rootViewController;
+  if ([self.rootViewController isKindOfClass:[UITabBarController class]]) {
+    UITabBarController* tabBarController = (UITabBarController*)self.rootViewController;
     if (tabBarController.selectedViewController) {
       return (UINavigationController*)tabBarController.selectedViewController;
     } else {
       return (UINavigationController*)[tabBarController.viewControllers objectAtIndex:0];
     }
-  } else if ([_rootViewController isKindOfClass:[UINavigationController class]]) {
-    return (UINavigationController*)_rootViewController;
+  } else if ([self.rootViewController isKindOfClass:[UINavigationController class]]) {
+    return (UINavigationController*)self.rootViewController;
   } else {
     return nil;
   }
@@ -129,20 +162,7 @@ UIViewController* TTOpenURL(NSString* URL) {
   if (navController) {
     return [TTNavigator frontViewControllerForController:navController];
   } else {
-    return [TTNavigator frontViewControllerForController:_rootViewController];
-  }
-}
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- * @private
- */
-- (void)setRootViewController:(UIViewController*)controller {
-  if (controller != _rootViewController) {
-    [_rootViewController release];
-    _rootViewController = [controller retain];
-    [self.window addSubview:_rootViewController.view];
+    return [TTNavigator frontViewControllerForController:self.rootViewController];
   }
 }
 
@@ -153,13 +173,13 @@ UIViewController* TTOpenURL(NSString* URL) {
  */
 - (UIViewController*)parentForController: (UIViewController*)controller
                            parentURLPath: (NSString*)parentURLPath {
-  if (controller == _rootViewController) {
+  if (controller == self.rootViewController) {
     return nil;
   } else {
     // If this is the first controller, and it is not a "container", forcibly put
     // a navigation controller at the root of the controller hierarchy.
-    if (!_rootViewController && ![controller canContainControllers]) {
-      [self setRootViewController:[[[UINavigationController alloc] init] autorelease]];
+    if (!self.rootViewController && ![controller canContainControllers]) {
+      self.rootViewController = [[[UINavigationController alloc] init] autorelease];
     }
 
     if (parentURLPath) {
@@ -237,8 +257,8 @@ UIViewController* TTOpenURL(NSString* URL) {
                transition: (NSInteger)transition {
   BOOL didPresentNewController = YES;
 
-  if (nil == _rootViewController) {
-    [self setRootViewController:controller];
+  if (nil == self.rootViewController) {
+    self.rootViewController = controller;
 
   } else {
     UIViewController* previousSuper = controller.superController;
@@ -269,9 +289,25 @@ UIViewController* TTOpenURL(NSString* URL) {
                           transition: transition];
 
       } else {
-        [parentController addSubcontroller: controller
-                                  animated: animated
-                                transition: transition];
+        BOOL didProcess = NO;
+        
+        if (mode == TTNavigationModeEmptyHistory) {
+          // TODO: Jeff's original hid popovers here; where best to handle that?
+          
+          if ([self.rootViewController isKindOfClass:[UINavigationController class]]) {
+            UINavigationController* navController = (UINavigationController*)self.rootViewController;
+            UIBarButtonItem* topItem = navController.navigationBar.topItem.leftBarButtonItem;
+            [navController setViewControllers:[NSArray arrayWithObject:controller] animated:NO];
+            navController.navigationBar.topItem.leftBarButtonItem = topItem;
+            didProcess = YES;
+          }
+        }
+        
+        if (!didProcess) {
+          [parentController addSubcontroller: controller
+                                    animated: animated
+                                  transition: transition];
+        }
       }
     }
   }
@@ -455,6 +491,7 @@ UIViewController* TTOpenURL(NSString* URL) {
   TT_RELEASE_SAFELY(_rootViewController);
   TT_RELEASE_SAFELY(_delayedControllers);
   TT_RELEASE_SAFELY(_URLMap);
+  TT_RELEASE_SAFELY(tt_uniquePrefix);
 
   [super dealloc];
 }
@@ -503,8 +540,32 @@ UIViewController* TTOpenURL(NSString* URL) {
 /**
  * @public
  */
+- (void)setRootViewController:(UIViewController*)controller {
+  if (controller != _rootViewController) {
+    [_rootViewController release];
+    _rootViewController = [controller retain];
+    if (self.parentNavigator) {
+      [self.parentNavigator componentNavigator:self didDisplayNewRootController:_rootViewController];
+    }
+    else {
+      // this is the root navigator, and so its root controller is the window's root controller
+      if ([self.window respondsToSelector:@selector(setRootViewController:)]) {
+        [self.window performSelector:@selector(setRootViewController:) withObject:_rootViewController];
+      } else {
+        [self.window removeAllSubviews];
+        [self.window addSubview:_rootViewController.view];
+      }
+    }
+  }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * @public
+ */
 - (UIViewController*)visibleViewController {
-  UIViewController* controller = _rootViewController;
+  UIViewController* controller = self.rootViewController;
   while (controller) {
     UIViewController* child = controller.modalViewController;
     if (!child) {
@@ -531,7 +592,7 @@ UIViewController* TTOpenURL(NSString* URL) {
  * @public
  */
 - (UIViewController*)topViewController {
-  UIViewController* controller = _rootViewController;
+  UIViewController* controller = self.rootViewController;
   while (controller) {
     UIViewController* child = controller.popupViewController;
     if (!child || ![child canBeTopViewController]) {
@@ -541,7 +602,7 @@ UIViewController* TTOpenURL(NSString* URL) {
       child = controller.topSubcontroller;
     }
     if (child) {
-      if (child == _rootViewController) {
+      if (child == self.rootViewController) {
         return child;
       } else {
         controller = child;
@@ -550,6 +611,15 @@ UIViewController* TTOpenURL(NSString* URL) {
       return controller;
     }
   }
+  return nil;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * @public
+ */
+- (NSArray*)componentNavigators {
   return nil;
 }
 
@@ -747,6 +817,7 @@ UIViewController* TTOpenURL(NSString* URL) {
   if (object) {
     UIViewController* controller = object;
     controller.originalNavigatorURL = URL;
+    controller.responsibleNavigator = self;
 
     if (_delayCount) {
       if (!_delayedControllers) {
@@ -760,6 +831,15 @@ UIViewController* TTOpenURL(NSString* URL) {
   } else {
     return nil;
   }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * @public
+ */
+- (TTNavigator*)navigatorForURLPath:(NSString*)urlPath {
+  return self;
 }
 
 
@@ -813,7 +893,7 @@ UIViewController* TTOpenURL(NSString* URL) {
  */
 - (void)persistViewControllers {
   NSMutableArray* path = [NSMutableArray array];
-  [self persistController:_rootViewController path:path];
+  [self persistController:self.rootViewController path:path];
   TTDCONDITIONLOG(TTDFLAG_NAVIGATOR, @"DEBUG PERSIST %@", path);
 
   // Check if any of the paths were "important", and therefore unable to expire
@@ -826,14 +906,20 @@ UIViewController* TTOpenURL(NSString* URL) {
   }
 
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  NSString* keyPrefix = TTIsStringWithAnyText(tt_uniquePrefix)
+                        ? tt_uniquePrefix : kNavigatorDefaultKeyPrefix;
+  NSString* historyKey = [keyPrefix stringByAppendingString:kNavigatorHistoryKeySuffix];
+  NSString* historyTimeKey = [keyPrefix stringByAppendingString:kNavigatorHistoryTimeKeySuffix];
+  NSString* historyImportantKey = [keyPrefix stringByAppendingString:kNavigatorHistoryImportantKeySuffix];
+  
   if (path.count) {
-    [defaults setObject:path forKey:@"TTNavigatorHistory"];
-    [defaults setObject:[NSDate date] forKey:@"TTNavigatorHistoryTime"];
-    [defaults setObject:[NSNumber numberWithInt:important] forKey:@"TTNavigatorHistoryImportant"];
+    [defaults setObject:path forKey:historyKey];
+    [defaults setObject:[NSDate date] forKey:historyTimeKey];
+    [defaults setObject:[NSNumber numberWithInt:important] forKey:historyImportantKey];
   } else {
-    [defaults removeObjectForKey:@"TTNavigatorHistory"];
-    [defaults removeObjectForKey:@"TTNavigatorHistoryTime"];
-    [defaults removeObjectForKey:@"TTNavigatorHistoryImportant"];
+    [defaults removeObjectForKey:historyKey];
+    [defaults removeObjectForKey:historyTimeKey];
+    [defaults removeObjectForKey:historyImportantKey];
   }
   [defaults synchronize];
 }
@@ -845,9 +931,12 @@ UIViewController* TTOpenURL(NSString* URL) {
  */
 - (UIViewController*)restoreViewControllers {
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  NSDate* timestamp = [defaults objectForKey:@"TTNavigatorHistoryTime"];
-  NSArray* path = [defaults objectForKey:@"TTNavigatorHistory"];
-  BOOL important = [[defaults objectForKey:@"TTNavigatorHistoryImportant"] boolValue];
+  NSString* keyPrefix = TTIsStringWithAnyText(tt_uniquePrefix)
+                        ? tt_uniquePrefix : kNavigatorDefaultKeyPrefix;
+  NSDate* timestamp = [defaults objectForKey:[keyPrefix stringByAppendingString:kNavigatorHistoryTimeKeySuffix]];
+  NSArray* path = [defaults objectForKey:[keyPrefix stringByAppendingString:kNavigatorHistoryKeySuffix]];
+  BOOL important = [[defaults objectForKey:[keyPrefix stringByAppendingString:kNavigatorHistoryImportantKeySuffix]] boolValue];
+  
   TTDCONDITIONLOG(TTDFLAG_NAVIGATOR, @"DEBUG RESTORE %@ FROM %@",
     path, [timestamp formatRelativeTime]);
 
@@ -892,6 +981,28 @@ UIViewController* TTOpenURL(NSString* URL) {
 /**
  * @public
  */
+- (void)restoreViewControllersWithDefaultURLs:(NSArray*)urls {
+  if (![self restoreViewControllers]) {
+    if ([urls count] > 0) {
+      [self openURLAction:[TTURLAction actionWithURLPath:[urls objectAtIndex:0]]];
+    }
+  }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * @public
+ */
+- (void)restoreViewControllersWithDefaultURL:(NSString*)url {
+  [self restoreViewControllersWithDefaultURLs:[NSArray arrayWithObject:url]];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * @public
+ */
 - (void)persistController:(UIViewController*)controller path:(NSMutableArray*)path {
   NSString* URL = controller.navigatorURL;
   if (URL) {
@@ -919,9 +1030,18 @@ UIViewController* TTOpenURL(NSString* URL) {
  * @public
  */
 - (void)removeAllViewControllers {
-  [_rootViewController.view removeFromSuperview];
-  TT_RELEASE_SAFELY(_rootViewController);
-  [_URLMap removeAllObjects];
+  [self.rootViewController.view removeFromSuperview];
+  self.rootViewController = nil;
+  [self.URLMap removeAllObjects];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * @public
+ */
+- (void)componentNavigator:(TTNavigator*)navigator
+        didDisplayNewRootController:(UIViewController*)rootViewController {
 }
 
 
@@ -954,7 +1074,7 @@ UIViewController* TTOpenURL(NSString* URL) {
  */
 - (id)objectForPath:(NSString*)path {
   NSArray* keys = [path componentsSeparatedByString:@"/"];
-  UIViewController* controller = _rootViewController;
+  UIViewController* controller = self.rootViewController;
   for (NSString* key in [keys reverseObjectEnumerator]) {
     controller = [controller subcontrollerForKey:key];
   }
@@ -968,9 +1088,11 @@ UIViewController* TTOpenURL(NSString* URL) {
  */
 - (void)resetDefaults {
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  [defaults removeObjectForKey:@"TTNavigatorHistory"];
-  [defaults removeObjectForKey:@"TTNavigatorHistoryTime"];
-  [defaults removeObjectForKey:@"TTNavigatorHistoryImportant"];
+  NSString* keyPrefix = TTIsStringWithAnyText(tt_uniquePrefix)
+                        ? tt_uniquePrefix : kNavigatorDefaultKeyPrefix;
+  [defaults removeObjectForKey:[keyPrefix stringByAppendingString:kNavigatorHistoryKeySuffix]];
+  [defaults removeObjectForKey:[keyPrefix stringByAppendingString:kNavigatorHistoryTimeKeySuffix]];
+  [defaults removeObjectForKey:[keyPrefix stringByAppendingString:kNavigatorHistoryImportantKeySuffix]];
   [defaults synchronize];
 }
 

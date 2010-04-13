@@ -110,6 +110,9 @@ UIDeviceOrientation TTDeviceOrientation() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 BOOL TTIsSupportedOrientation(UIInterfaceOrientation orientation) {
+  if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+    return YES;
+  }
   switch (orientation) {
     case UIInterfaceOrientationPortrait:
     case UIInterfaceOrientationLandscapeLeft:

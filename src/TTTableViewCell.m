@@ -22,6 +22,8 @@
 
 @implementation TTTableViewCell
 
+@synthesize responsibleNavigator = tt_responsibleNavigator;
+
 + (CGFloat)tableView:(UITableView*)tableView rowHeightForObject:(id)object {
   return TT_ROW_HEIGHT;
 }

@@ -31,6 +31,7 @@
 @implementation TTTableViewDataSource
 
 @synthesize model = _model;
+@synthesize responsibleNavigator = tt_responsibleNavigator;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // class public
@@ -93,7 +94,9 @@
   [identifier release];
 
   if ([cell isKindOfClass:[TTTableViewCell class]]) {
-    [(TTTableViewCell*)cell setObject:object];
+    TTTableViewCell* ttCell = (TTTableViewCell*)cell;
+    [ttCell setResponsibleNavigator:self.responsibleNavigator];
+    [ttCell setObject:object];
   }
 
   [self tableView:tableView cell:cell willAppearAtIndexPath:indexPath];

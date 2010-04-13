@@ -18,6 +18,7 @@
 
 #import "Three20/TTGlobalCore.h"
 
+#import "Three20/TTURLAction.h"
 #import "Three20/TTURLCache.h"
 #import "Three20/TTNavigator.h"
 
@@ -345,6 +346,7 @@
 @implementation TTStyledLinkNode
 
 @synthesize URL = _URL, highlighted = _highlighted;
+@synthesize navigator = tt_navigator;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // NSObject
@@ -381,6 +383,7 @@
 
 - (void)dealloc {
   TT_RELEASE_SAFELY(_URL);
+  TT_RELEASE_SAFELY(tt_navigator);
   [super dealloc];
 }
 
@@ -393,7 +396,13 @@
 
 - (void)performDefaultAction {
   if (_URL) {
-    TTOpenURL(_URL);
+    TTURLAction* action = [[TTURLAction actionWithURLPath:_URL] applyAnimated:YES];
+    if (tt_navigator) {
+      [tt_navigator openURLAction:action];
+    }
+    else {
+      [[TTNavigator navigator] openURLAction:action];
+    }
   }
 }
 

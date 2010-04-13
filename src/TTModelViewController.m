@@ -314,7 +314,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (id<TTModel>)model {
   if (!_model) {
-    if (![TTNavigator navigator].isDelayed) {
+    TTDASSERT(nil != self.responsibleNavigator);
+    if (!self.responsibleNavigator.isDelayed) {
       [self createModel];
     }
 

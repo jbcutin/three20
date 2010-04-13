@@ -83,10 +83,13 @@ static const CGFloat kDefaultMessageImageHeight = 34;
 
     TTTableLinkedItem* item = object;
     if (item.URL) {
-      TTNavigationMode navigationMode = [[TTNavigator navigator].URLMap
-                                         navigationModeForURL:item.URL];
+      TTNavigator* navigator = [[TTNavigator navigator] navigatorForURLPath:item.URL];
+      TTNavigationMode navigationMode = [navigator.URLMap navigationModeForURL:item.URL];
+      
       if (item.accessoryURL) {
         self.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+      } else if (navigator != self.responsibleNavigator) {
+        self.accessoryType = UITableViewCellAccessoryNone;
       } else if (navigationMode == TTNavigationModeCreate ||
                  navigationMode == TTNavigationModeShare) {
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

@@ -39,11 +39,19 @@
 // class public
 
 + (TTStyledText*)textFromXHTML:(NSString*)source {
-  return [self textFromXHTML:source lineBreaks:NO URLs:YES];
+  return [self textFromXHTML:source lineBreaks:NO URLs:YES navigator:nil];
+}
+
++ (TTStyledText*)textFromXHTML:(NSString*)source withNavigator:(TTNavigator*)navigator {
+  return [self textFromXHTML:source lineBreaks:NO URLs:YES navigator:navigator];
 }
 
 + (TTStyledText*)textFromXHTML:(NSString*)source lineBreaks:(BOOL)lineBreaks URLs:(BOOL)URLs {
-  TTStyledTextParser* parser = [[[TTStyledTextParser alloc] init] autorelease];
+  return [self textFromXHTML:source lineBreaks:lineBreaks URLs:URLs navigator:nil];
+}
+
++ (TTStyledText*)textFromXHTML:(NSString*)source lineBreaks:(BOOL)lineBreaks URLs:(BOOL)URLs navigator:(TTNavigator*)navigator {
+  TTStyledTextParser* parser = [[[TTStyledTextParser alloc] initWithNavigator:navigator] autorelease];
   parser.parseLineBreaks = lineBreaks;
   parser.parseURLs = URLs;
   [parser parseXHTML:source];

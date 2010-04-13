@@ -94,6 +94,7 @@
       if (endRange.location == NSNotFound) {
         NSString* URL = [string substringWithRange:searchRange];
         TTStyledLinkNode* node = [[[TTStyledLinkNode alloc] initWithText:URL] autorelease];
+        node.navigator = tt_navigator;
         node.URL = URL;
         [self addNode:node];
         break;
@@ -102,6 +103,7 @@
                                              endRange.location - startRange.location);
         NSString* URL = [string substringWithRange:URLRange];
         TTStyledLinkNode* node = [[[TTStyledLinkNode alloc] initWithText:URL] autorelease];
+        node.navigator = tt_navigator;
         node.URL = URL;
         [self addNode:node];
         index = endRange.location;
@@ -113,7 +115,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // NSObject
 
-- (id)init {
+- (id)initWithNavigator:(TTNavigator*)navigator {
   if (self = [super init]) {
     _rootNode = nil;
     _topElement = nil;
@@ -122,14 +124,20 @@
     _stack = nil;
     _parseLineBreaks = NO;
     _parseURLs = NO;
+    tt_navigator = [navigator retain];
   }
   return self;
+}
+
+- (id)init {
+  return [self initWithNavigator:nil];
 }
 
 - (void)dealloc {
   TT_RELEASE_SAFELY(_rootNode);
   TT_RELEASE_SAFELY(_chars);
   TT_RELEASE_SAFELY(_stack);
+  TT_RELEASE_SAFELY(tt_navigator);
   [super dealloc];
 }
 

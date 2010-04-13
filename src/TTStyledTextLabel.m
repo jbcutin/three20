@@ -434,6 +434,12 @@ static const CGFloat kCancelHighlightThreshold = 4;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)setHtml:(NSString*)html withNavigator:(TTNavigator*)navigator {
+  self.text = [TTStyledText textFromXHTML:html withNavigator:navigator];
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)setFont:(UIFont*)font {
   if (font != _font) {
     [_font release];

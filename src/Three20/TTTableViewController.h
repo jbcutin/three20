@@ -18,6 +18,7 @@
 
 @protocol TTTableViewDataSource;
 @class TTActivityLabel;
+@class TTNavigator;
 
 @interface TTTableViewController : TTModelViewController {
   UITableView* _tableView;
@@ -140,5 +141,11 @@
  * The rectangle where the banner view should appear.
  */
 - (CGRect)rectForBannerView;
+
+/**
+ * Perform any additional actions necessary when this controller's
+ * responsible navigator is set.
+ */
+- (void)setResponsibleNavigatorSideEffects:(TTNavigator*)navigator;
 
 @end
