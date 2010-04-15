@@ -283,7 +283,7 @@ typedef enum {
  * The default implementation does nothing.
  */
 - (void)componentNavigator:(TTNavigator*)navigator
-        didDisplayNewRootController:(UIViewController*)rootViewController;
+        didDisplayController:(UIViewController*)controller;
 
 /**
  * Gets a navigation path which can be used to locate an object.

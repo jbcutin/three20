@@ -19,6 +19,7 @@
 #import "Three20/TTNavigator.h"
 
 #import "Three20/TTGlobalCore.h"
+#import "Three20/TTGlobalUI.h"
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,6 +36,7 @@
   [super dealloc];
 }
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
   if (event.type == UIEventSubtypeMotionShake) {
@@ -42,6 +44,21 @@
     if (nav.supportsShakeToReload) {
       [nav reload];
     }
+  }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * @public
+ */
+- (void)setRootViewController:(UIViewController*)controller {
+  if (controller != tt_rootViewController) {
+    [tt_rootViewController release];
+    tt_rootViewController = [controller retain];
+
+    [self removeAllSubviews];
+    [self addSubview:tt_rootViewController.view];
   }
 }
 

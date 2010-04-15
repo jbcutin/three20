@@ -41,7 +41,7 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-- (CGSize)contentSizeForViewInPopoverView {
+- (CGSize)contentSizeForViewInPopover {
   return CGSizeMake(320.0, 600.0);
 }
 

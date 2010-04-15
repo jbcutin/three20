@@ -545,7 +545,7 @@ UIViewController* TTOpenURL(NSString* URL) {
     [_rootViewController release];
     _rootViewController = [controller retain];
     if (self.parentNavigator) {
-      [self.parentNavigator componentNavigator:self didDisplayNewRootController:_rootViewController];
+      [self.parentNavigator componentNavigator:self didDisplayController:_rootViewController];
     }
     else {
       // this is the root navigator, and so its root controller is the window's root controller
@@ -1041,7 +1041,7 @@ UIViewController* TTOpenURL(NSString* URL) {
  * @public
  */
 - (void)componentNavigator:(TTNavigator*)navigator
-        didDisplayNewRootController:(UIViewController*)rootViewController {
+        didDisplayController:(UIViewController*)controller {
 }
 
 

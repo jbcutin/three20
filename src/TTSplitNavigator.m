@@ -59,6 +59,32 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void)updatePopoverButton {
+  NSString* title = TTIsStringWithAnyText(self.popoverButtonTitle)
+                    ? self.popoverButtonTitle
+                    : [[self.componentNavigators objectAtIndex:TTNavigatorSplitViewLeftSide] rootViewController].title;
+  
+  // No title means this button isn't going to display at all. Consider setting popoverButtonTitle
+  // if you can't guarantee that your navigation view will have a title.
+  TTDASSERT(nil != title);
+  self.popoverButton.title = title;
+  
+  TTNavigator* rightSideNavigator = [self.componentNavigators objectAtIndex:TTNavigatorSplitViewRightSide];
+  UIViewController* viewController = rightSideNavigator.rootViewController;
+  if ([viewController isKindOfClass:[UINavigationController class]]) {
+    UINavigationController* navController = (UINavigationController*)viewController;
+    if ([navController.viewControllers count] == 1) {
+      [navController.navigationBar.topItem setLeftBarButtonItem:self.popoverButton animated:YES];
+    }
+    
+  } else {
+    // Not implemented
+    TTDASSERT(NO);
+  }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark UISplitViewControllerDelegate
@@ -73,31 +99,12 @@
     return;
   }
   
-  NSString* title = TTIsStringWithAnyText(tt_popoverButtonTitle)
-                    ? tt_popoverButtonTitle
-                    : [[self.componentNavigators objectAtIndex:TTNavigatorSplitViewLeftSide] rootViewController].title;
-  
-  // No title means this button isn't going to display at all. Consider setting popoverButtonTitle
-  // if you can't guarantee that your navigation view will have a title.
-  TTDASSERT(nil != title);
-  barButtonItem.title = title;
-  
-  TTNavigator* rightSideNavigator = [self.componentNavigators objectAtIndex:TTNavigatorSplitViewRightSide];
-  UIViewController* viewController = rightSideNavigator.rootViewController;
-  if ([viewController isKindOfClass:[UINavigationController class]]) {
-    UINavigationController* navController = (UINavigationController*)viewController;
-    if ([navController.viewControllers count] == 1) {
-      [navController.navigationBar.topItem setLeftBarButtonItem:barButtonItem animated:YES];
-    }
-    
-  } else {
-    // Not implemented
-    TTDASSERT(NO);
-  }
-  
   [barButtonItem retain];
   [tt_popoverButton release];
   tt_popoverButton = barButtonItem;
+  
+  [self updatePopoverButton];
+  
   self.popoverController = pc;
 }
 
@@ -123,6 +130,13 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+- (void) splitViewController: (UISplitViewController*)svc
+           popoverController: (UIPopoverController*)pc
+   willPresentViewController: (UIViewController *)aViewController {
+  return;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 #pragma mark -
 #pragma mark Public methods
@@ -138,12 +152,13 @@
   }
   
   UISplitViewController* rootViewController = [[UISplitViewController alloc] init];
-  self.rootViewController = rootViewController;
   
   if (self.showPopoverButton) {
     // Currently the only thing the delegate is used for is displaying the popover.
     rootViewController.delegate = self;
   }
+  
+  self.rootViewController = rootViewController;
   
   return rootViewController;
 }
@@ -208,23 +223,33 @@
  * @public
  */
 - (void)componentNavigator:(TTNavigator*)navigator
-        didDisplayNewRootController:(UIViewController*)rootViewController {
+        didDisplayController:(UIViewController*)controller {
   NSUInteger ix = [self.componentNavigators indexOfObject:navigator];
   if (ix == NSNotFound) return;
   
-  UISplitViewController* splitViewController = (UISplitViewController*)self.rootViewController;
-  NSMutableArray* viewControllers = [splitViewController.viewControllers mutableCopy];
-  [viewControllers replaceObjectAtIndex:ix withObject:rootViewController];
-  splitViewController.viewControllers = viewControllers;
+  // if the navigator has a new root controller, update the split view appropriately
+  if (controller == navigator.rootViewController) {
+    UISplitViewController* splitViewController = (UISplitViewController*)self.rootViewController;
+    if ([splitViewController.viewControllers objectAtIndex:ix] != controller) {
+      NSMutableArray* viewControllers = [splitViewController.viewControllers mutableCopy];
+      [viewControllers replaceObjectAtIndex:ix withObject:controller];
+      splitViewController.viewControllers = viewControllers;
+    }
+  }
   
+  // if the navigator's root is a navigation controller, make sure it has the popover button
   if (ix == TTNavigatorSplitViewRightSide) {
-    if ([rootViewController isKindOfClass:[UINavigationController class]]) {
-      UINavigationController* navController = (UINavigationController*)rootViewController;
+    if ([navigator.rootViewController isKindOfClass:[UINavigationController class]]) {
+      UINavigationController* navController = (UINavigationController*)navigator.rootViewController;
       UINavigationItem* topItem = navController.navigationBar.topItem;
       [topItem setLeftBarButtonItem:self.popoverButton animated:NO];
     }
   }
   
+  // if there's a new left side, update the popover button text
+  if (ix == TTNavigatorSplitViewLeftSide) {
+    [self updatePopoverButton];
+  }    
 }
 
 

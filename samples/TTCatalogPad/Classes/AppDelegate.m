@@ -32,7 +32,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
   [TTNavigator setSharedNavigatorWithRootControllerClass:[UISplitViewController class]];
-  [TTNavigator navigator].rootViewController;
   
   TTNavigator* rightSideNavigator = [[TTNavigator navigator].componentNavigators
                                      objectAtIndex:TTNavigatorSplitViewRightSide];

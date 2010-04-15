@@ -30,6 +30,6 @@
  * The controller that is at the root of the view controller hierarchy, always a split view
  * controller.
  */
-@property (nonatomic,retain,readonly) UIViewController* rootViewController;
+@property (nonatomic,retain) UIViewController* rootViewController;
 
 @end
