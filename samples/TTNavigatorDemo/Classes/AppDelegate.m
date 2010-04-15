@@ -11,7 +11,6 @@
 - (void)applicationDidFinishLaunching:(UIApplication*)application {
   TTNavigator* navigator = [TTNavigator navigator];
   navigator.persistenceMode = TTNavigatorPersistenceModeAll;
-  navigator.window = [[[UIWindow alloc] initWithFrame:TTScreenBounds()] autorelease];
   
   TTURLMap* map = navigator.URLMap;
   
@@ -59,11 +58,8 @@
   // This will simply call the sendOrder method on this app delegate
   [map from:@"tt://order/send" toObject:self selector:@selector(sendOrder)];
 
-  // Before opening the tab bar, we see if the controller history was persisted the last time
-  if (![navigator restoreViewControllers]) {
-    // This is the first launch, so we just start with the tab bar
-    [navigator openURLAction:[TTURLAction actionWithURLPath:@"tt://tabBar"]];
-  }
+  // Attempt to restore persisted controller history, falling back to the tab bar
+  [navigator restoreViewControllersWithDefaultURL:@"tt://tabBar"];
 }
 
 - (BOOL)application:(UIApplication*)application handleOpenURL:(NSURL*)URL {
