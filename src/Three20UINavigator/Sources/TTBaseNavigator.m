@@ -66,10 +66,19 @@ static NSString* kNavigatorHistoryImportantKey  = @"TTNavigatorHistoryImportant"
     _URLMap = [[TTURLMap alloc] init];
     _persistenceMode = TTNavigatorPersistenceModeNone;
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationWillTerminateNotification:)
-                                                 name:UIApplicationWillTerminateNotification
-                                               object:nil];
+	NSString *notificationName = nil; 
+	UIDevice *device = [UIDevice currentDevice]; 
+	if ([device respondsToSelector:@selector(isMultitaskingSupported)] && 
+		[device isMultitaskingSupported]) 
+		notificationName = UIApplicationDidEnterBackgroundNotification; 
+	else 
+		notificationName = UIApplicationWillTerminateNotification; 
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self 
+											 selector:@selector(applicationWillTerminateNotification:) 
+												 name:notificationName 
+												 object:nil]; 
+	
   }
   return self;
 }
@@ -77,9 +86,7 @@ static NSString* kNavigatorHistoryImportantKey  = @"TTNavigatorHistoryImportant"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                  name:UIApplicationWillTerminateNotification
-                                                object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   _delegate = nil;
   TT_RELEASE_SAFELY(_window);
   TT_RELEASE_SAFELY(_rootViewController);
