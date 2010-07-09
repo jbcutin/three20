@@ -31,6 +31,12 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)display {
   if (nil != _override) {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 40000
+    // TODO: be smarter about setting scale factor based on content
+    if( [self respondsToSelector:@selector(setContentsScale:)] ) {
+      self.contentsScale = 1.0;
+    }
+#endif
     self.contents = (id)_override.image.CGImage;
   } else {
     return [super display];
