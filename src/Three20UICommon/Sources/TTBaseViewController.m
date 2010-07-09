@@ -293,15 +293,19 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)keyboardDidShow:(NSNotification*)notification {
-#if __IPHONE_3_2 && __IPHONE_3_2 <= __IPHONE_OS_VERSION_MAX_ALLOWED
-  CGRect frameStart;
-  [[notification.userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] getValue:&frameStart];
-
-  CGRect keyboardBounds = CGRectMake(0, 0, frameStart.size.width, frameStart.size.height);
-#else
   CGRect keyboardBounds;
-  [[notification.userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&keyboardBounds];
+#if __IPHONE_3_2 && __IPHONE_3_2 <= __IPHONE_OS_VERSION_MAX_ALLOWED
+  if (TTOSVersion() >= 3.2) {
+    CGRect frameStart;
+    [[notification.userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] getValue:&frameStart];
+
+    keyboardBounds = CGRectMake(0, 0, frameStart.size.width, frameStart.size.height);
+  } 
+  else
 #endif
+  {
+    [[notification.userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&keyboardBounds];
+  }
 
   [self keyboardDidAppear:YES withBounds:keyboardBounds];
 }
@@ -317,15 +321,19 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)keyboardWillHide:(NSNotification*)notification {
-#if __IPHONE_3_2 && __IPHONE_3_2 <= __IPHONE_OS_VERSION_MAX_ALLOWED
-  CGRect frameEnd;
-  [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] getValue:&frameEnd];
-
-  CGRect keyboardBounds = CGRectMake(0, 0, frameEnd.size.width, frameEnd.size.height);
-#else
   CGRect keyboardBounds;
-  [[notification.userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&keyboardBounds];
+#if __IPHONE_3_2 && __IPHONE_3_2 <= __IPHONE_OS_VERSION_MAX_ALLOWED
+  if (TTOSVersion() >= 3.2) {
+    CGRect frameEnd;
+    [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] getValue:&frameEnd];
+
+    keyboardBounds = CGRectMake(0, 0, frameEnd.size.width, frameEnd.size.height);
+  } 
+  else
 #endif
+  {
+    [[notification.userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&keyboardBounds];
+  }
 
   [self keyboardWillDisappear:YES withBounds:keyboardBounds];
 }
