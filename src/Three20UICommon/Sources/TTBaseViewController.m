@@ -108,6 +108,8 @@
   else
 #endif
   {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [[notification.userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&keyboardBounds];
 
     CGPoint keyboardStart;
@@ -117,6 +119,7 @@
     [[notification.userInfo objectForKey:UIKeyboardCenterEndUserInfoKey] getValue:&keyboardEnd];
 
     animated = keyboardStart.y != keyboardEnd.y;
+#pragma clang diagnostic pop
   }
   
   if (animated) {
@@ -304,7 +307,10 @@
   else
 #endif
   {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [[notification.userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&keyboardBounds];
+#pragma clang diagnostic pop
   }
 
   [self keyboardDidAppear:YES withBounds:keyboardBounds];
@@ -332,7 +338,10 @@
   else
 #endif
   {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [[notification.userInfo objectForKey:UIKeyboardBoundsUserInfoKey] getValue:&keyboardBounds];
+#pragma clang diagnostic pop
   }
 
   [self keyboardWillDisappear:YES withBounds:keyboardBounds];

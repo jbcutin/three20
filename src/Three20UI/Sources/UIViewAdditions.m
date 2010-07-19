@@ -466,6 +466,8 @@
   else
 #endif
   {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     CGRect bounds = CGRectMake(0, 0, screenFrame.size.width, self.height);
     CGPoint centerBegin = CGPointMake(floor(screenFrame.size.width/2 - self.width/2),
                                       screenFrame.size.height + floor(self.height/2));
@@ -477,6 +479,7 @@
             [NSValue valueWithCGPoint:centerBegin], UIKeyboardCenterBeginUserInfoKey,
             [NSValue valueWithCGPoint:centerEnd], UIKeyboardCenterEndUserInfoKey,
             nil];
+#pragma clang diagnostic pop
   }
 }
 

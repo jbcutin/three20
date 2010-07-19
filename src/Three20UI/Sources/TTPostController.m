@@ -148,7 +148,10 @@ static const CGFloat kMarginY = 6;
     else
 #endif
     {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
       [app setStatusBarHidden:NO animated:YES];
+#pragma clang diagnostic pop
     }
     [app setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
   }
@@ -166,7 +169,10 @@ static const CGFloat kMarginY = 6;
   else
 #endif
   {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [app setStatusBarHidden:_originalStatusBarHidden animated:YES];
+#pragma clang diagnostic pop
   }
   [app setStatusBarStyle:_originalStatusBarStyle animated:NO];
   [_textView resignFirstResponder];
