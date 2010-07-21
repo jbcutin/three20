@@ -14,24 +14,18 @@
 // limitations under the License.
 //
 
-#import "Three20Style/TTDefaultStyleSheet.h"
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@class TTCSSStyleSheet;
-
-#define TTCSSBGCOLOR(selector)  [[TTDefaultCSSStyleSheet globalCSSStyleSheet] \
-                                  backgroundColorForCSSSelector:selector]
-
-@interface TTDefaultCSSStyleSheet : TTDefaultStyleSheet {
-@private
-  TTCSSStyleSheet* _styleSheet;
+@interface TTLauncherHighlightView : UIView {
+  CGRect    _highlightRect;
+  CGFloat   _highlightScale;
+  UILabel*  _textLabel;
 }
 
-@property (nonatomic, readonly) TTCSSStyleSheet* styleSheet;
+@property (nonatomic, assign) CGRect    highlightRect;
+@property (nonatomic, copy)   NSString* text;
 
-- (BOOL)addStyleSheetFromDisk:(NSString*)filename;
-
-- (UIColor*)backgroundColorForCSSSelector:(NSString*)cssSelector;
-
-+ (TTDefaultCSSStyleSheet*)globalCSSStyleSheet;
+- (void)appear:(BOOL)animated;
 
 @end
