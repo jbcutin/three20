@@ -126,36 +126,44 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)requestDidStartLoad:(TTURLRequest*)request {
-  [_loadingRequest release];
-  _loadingRequest = [request retain];
-  [self didStartLoad];
+  if( request == _loadingRequest ) {
+    [_loadingRequest release];
+    _loadingRequest = [request retain];
+    [self didStartLoad];
+  }
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)requestDidFinishLoad:(TTURLRequest*)request {
-  if (!self.isLoadingMore) {
-    [_loadedTime release];
-    _loadedTime = [request.timestamp retain];
-    self.cacheKey = request.cacheKey;
-  }
+  if( request == _loadingRequest ) {
+    if (!self.isLoadingMore) {
+      [_loadedTime release];
+      _loadedTime = [request.timestamp retain];
+      self.cacheKey = request.cacheKey;
+    }
 
-  TT_RELEASE_SAFELY(_loadingRequest);
-  [self didFinishLoad];
+    TT_RELEASE_SAFELY(_loadingRequest);
+    [self didFinishLoad];
+  }
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)request:(TTURLRequest*)request didFailLoadWithError:(NSError*)error {
-  TT_RELEASE_SAFELY(_loadingRequest);
-  [self didFailLoadWithError:error];
+  if( request == _loadingRequest ) {
+    TT_RELEASE_SAFELY(_loadingRequest);
+    [self didFailLoadWithError:error];
+  }
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)requestDidCancelLoad:(TTURLRequest*)request {
-  TT_RELEASE_SAFELY(_loadingRequest);
-  [self didCancelLoad];
+  if( request == _loadingRequest ) {
+    TT_RELEASE_SAFELY(_loadingRequest);
+    [self didCancelLoad];
+  }
 }
 
 
