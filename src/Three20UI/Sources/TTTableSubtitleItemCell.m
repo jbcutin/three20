@@ -116,7 +116,7 @@
     self.detailTextLabel.frame = CGRectMake(left, self.textLabel.bottom, width, subtitleHeight);
 
   } else {
-    self.textLabel.frame = CGRectMake(_imageView2.right + kTableCellSmallMargin, 0, width, height);
+    self.textLabel.frame = CGRectMake(left, 0, width, height);
     self.detailTextLabel.frame = CGRectZero;
   }
 }
