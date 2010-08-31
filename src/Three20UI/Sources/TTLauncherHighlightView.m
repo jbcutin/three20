@@ -26,8 +26,11 @@
 // Core
 #import "Three20Core/TTCorePreprocessorMacros.h"
 
-
+static const CGFloat kHighlightOverlayAlpha = 0.7f;
 static const CGFloat kSpotlightScaleFactor = 2.5f;
+static const CGFloat kSpotlightBlurInnerAlpha = 0.43f;
+static const CGFloat kSpotlightBlurOuterAlpha = 0.7f;  // same as kHighlightOverlayAlpha; grr const
+static const CGFloat kSpotlightBlurRadius = 120.0f;
 static const CGFloat kHighlightTextPadding = 20.0f;
 
 
@@ -37,6 +40,7 @@ static const CGFloat kHighlightTextPadding = 20.0f;
 @implementation TTLauncherHighlightView
 
 @synthesize highlightRect = _highlightRect;
+@synthesize parentView    = _parentView;
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +55,8 @@ static const CGFloat kHighlightTextPadding = 20.0f;
     _textLabel.textAlignment = UITextAlignmentCenter;
     _textLabel.textColor = [UIColor whiteColor];
     _textLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+    _textLabel.shadowColor = [UIColor blackColor];
+    _textLabel.shadowOffset = CGSizeMake(1, 1);
 
     [self addSubview:_textLabel];
   }
@@ -62,6 +68,7 @@ static const CGFloat kHighlightTextPadding = 20.0f;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)dealloc {
   TT_RELEASE_SAFELY(_textLabel);
+  self.parentView = nil;
 
   [super dealloc];
 }
@@ -168,11 +175,30 @@ static const CGFloat kHighlightTextPadding = 20.0f;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)drawRect:(CGRect)rect {
-  [[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.7] set];
+  [[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:kHighlightOverlayAlpha] set];
   UIRectFillUsingBlendMode(rect, kCGBlendModeOverlay);
 
   CGContextRef context = UIGraphicsGetCurrentContext();
   CGContextSetBlendMode(context, kCGBlendModeCopy);
+
+  // Draw the spotlight (more of a Fresnel lens effect but okay I'll stop now)
+  const CGFloat components[] = {0, 0, 0, kSpotlightBlurInnerAlpha,
+                                0, 0, 0, kSpotlightBlurOuterAlpha};
+  CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+  CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, components, NULL, 2);
+  CGPoint center = CGPointMake(floor(_highlightRect.origin.x + _highlightRect.size.width / 2),
+                               floor(_highlightRect.origin.y + _highlightRect.size.height / 2));
+  CGFloat startRadius = MIN(_highlightRect.size.width, _highlightRect.size.height) / 2;
+  CGFloat endRadius = startRadius + kSpotlightBlurRadius;
+  CGContextDrawRadialGradient(context,
+                              gradient,
+                              center, startRadius,
+                              center, endRadius,
+                              kCGGradientDrawsAfterEndLocation);
+  CGColorSpaceRelease(colorSpace);
+  CGGradientRelease(gradient);
+
+  // Draw the clear circle
   CGContextSetRGBFillColor(context, 0, 0, 0, 0);
   CGContextFillEllipseInRect(context, _highlightRect);
 }
@@ -214,8 +240,7 @@ static const CGFloat kHighlightTextPadding = 20.0f;
   }
 
   // This will take care of removing the view
-  TTLauncherView* launcherView = (TTLauncherView *)self.superview;
-  [launcherView endHighlightItem:nil];
+  [_parentView endHighlightItem:nil];
 }
 
 
