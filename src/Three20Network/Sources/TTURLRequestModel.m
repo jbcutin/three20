@@ -126,26 +126,25 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)requestDidStartLoad:(TTURLRequest*)request {
-  if( request == _loadingRequest ) {
-    [_loadingRequest release];
-    _loadingRequest = [request retain];
-    [self didStartLoad];
-  }
+  [_loadingRequest release];
+  _loadingRequest = [request retain];
+  [self didStartLoad];
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)requestDidFinishLoad:(TTURLRequest*)request {
-  if( request == _loadingRequest ) {
-    if (!self.isLoadingMore) {
-      [_loadedTime release];
-      _loadedTime = [request.timestamp retain];
-      self.cacheKey = request.cacheKey;
-    }
-
-    TT_RELEASE_SAFELY(_loadingRequest);
-    [self didFinishLoad];
+  if (!self.isLoadingMore) {
+    [_loadedTime release];
+    _loadedTime = [request.timestamp retain];
+    self.cacheKey = request.cacheKey;
   }
+  
+  if( request == _loadingRequest ) {
+    TT_RELEASE_SAFELY(_loadingRequest);
+  }
+  
+  [self didFinishLoad];
 }
 
 
@@ -153,8 +152,8 @@
 - (void)request:(TTURLRequest*)request didFailLoadWithError:(NSError*)error {
   if( request == _loadingRequest ) {
     TT_RELEASE_SAFELY(_loadingRequest);
-    [self didFailLoadWithError:error];
   }
+  [self didFailLoadWithError:error];
 }
 
 
@@ -162,8 +161,8 @@
 - (void)requestDidCancelLoad:(TTURLRequest*)request {
   if( request == _loadingRequest ) {
     TT_RELEASE_SAFELY(_loadingRequest);
-    [self didCancelLoad];
   }
+  [self didCancelLoad];
 }
 
 
