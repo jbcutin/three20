@@ -735,6 +735,11 @@ static NSString* kNavigatorHistoryImportantKey  = @"TTNavigatorHistoryImportant"
     if (_persistenceMode == TTNavigatorPersistenceModeTop && passedContainer) {
       break;
     }
+    
+    // if the URL couldn't be opened, don't continue down the path [Sixten]
+    if( !controller ) {
+      break;
+    }
 
     passedContainer = [controller canContainControllers];
   }
